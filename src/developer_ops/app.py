@@ -31,7 +31,7 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             raise ValueError("DOA_OPENAI_API_KEY is required")
         provider = OpenAIProvider(config.openai_api_key.get_secret_value(), config.model)
     llm = provider
-    processor = Processor(db, LLMBoundary(llm))
+    processor = Processor(db, LLMBoundary(llm, config), config)
     configure_logging()
 
     @asynccontextmanager

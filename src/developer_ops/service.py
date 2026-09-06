@@ -1,7 +1,10 @@
+import asyncio
+
 from pydantic import ValidationError
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
+from developer_ops.config import Settings
 from developer_ops.db import Database, Digest, Event, Task
 from developer_ops.observability import log
 from developer_ops.provider import LLMProvider, ProviderError, task_context
@@ -9,9 +12,10 @@ from developer_ops.schemas import DigestOutput, GitHubItem, TaskUpdate, WebhookP
 
 
 class Processor:
-    def __init__(self, db: Database, provider: LLMProvider) -> None:
+    def __init__(self, db: Database, provider: LLMProvider, config: Settings) -> None:
         self.db = db
         self.provider = provider
+        self.config = config
 
     async def ingest(self, event_id: str, kind: str, payload: WebhookPayload) -> dict[str, object]:
         item = payload.issue if kind == "issues" else payload.pull_request
@@ -41,46 +45,49 @@ class Processor:
 
     async def process(self, event_id: str, kind: str, repository: str, item: GitHubItem) -> None:
         try:
-            async with self.db.sessions.begin() as session:
-                event = await session.get(Event, event_id)
-                assert event is not None
-                event.status = "processing"
-            log("event", "processing")
-            context = task_context(repository, kind, item.model_dump())
-            update = TaskUpdate.model_validate_json(
-                await self.provider.extract_task_update(context)
-            )
-            async with self.db.sessions.begin() as session:
-                task = await session.scalar(
-                    select(Task).where(
-                        Task.repository == repository,
-                        Task.kind == kind,
-                        Task.number == item.number,
-                    )
+            async with asyncio.timeout(self.config.processing_deadline_seconds):
+                async with self.db.sessions.begin() as session:
+                    event = await session.get(Event, event_id)
+                    assert event is not None
+                    event.status = "processing"
+                log("event", "processing")
+                context = task_context(repository, kind, item.model_dump())
+                update = TaskUpdate.model_validate_json(
+                    await self.provider.extract_task_update(context)
                 )
-                if task is None:
-                    task = Task(repository=repository, kind=kind, number=item.number)
-                    session.add(task)
-                task.state = item.state
-                task.source_updated_at = item.updated_at
-                task.summary = update.summary
-                task.category = update.category
-                task.event_id = event_id
-            digest = DigestOutput.model_validate_json(
-                await self.provider.generate_digest(update.model_dump_json())
-            )
-            async with self.db.sessions.begin() as session:
-                session.add(Digest(event_id=event_id, summary=digest.summary))
-                event = await session.get(Event, event_id)
-                assert event is not None
-                event.status = "completed"
-            log("event", "completed")
-        except (ProviderError, ValidationError, SQLAlchemyError) as exc:
+                async with self.db.sessions.begin() as session:
+                    task = await session.scalar(
+                        select(Task).where(
+                            Task.repository == repository,
+                            Task.kind == kind,
+                            Task.number == item.number,
+                        )
+                    )
+                    if task is None:
+                        task = Task(repository=repository, kind=kind, number=item.number)
+                        session.add(task)
+                    task.state = item.state
+                    task.source_updated_at = item.updated_at
+                    task.summary = update.summary
+                    task.category = update.category
+                    task.event_id = event_id
+                digest = DigestOutput.model_validate_json(
+                    await self.provider.generate_digest(update.model_dump_json())
+                )
+                async with self.db.sessions.begin() as session:
+                    session.add(Digest(event_id=event_id, summary=digest.summary))
+                    event = await session.get(Event, event_id)
+                    assert event is not None
+                    event.status = "completed"
+                log("event", "completed")
+        except (ProviderError, ValidationError, SQLAlchemyError, TimeoutError) as exc:
             category = (
                 exc.category
                 if isinstance(exc, ProviderError)
                 else "invalid_output"
                 if isinstance(exc, ValidationError)
+                else "deadline"
+                if isinstance(exc, TimeoutError)
                 else "database"
             )
             async with self.db.sessions.begin() as session:
