@@ -1,0 +1,10 @@
+{
+  "provider": "fake-v1",
+  "events": 30,
+  "completed": 30,
+  "provider_calls": 60,
+  "p50_ms": 6.31,
+  "p95_ms": 8.674,
+  "tokens": null,
+  "estimated_cost_usd": null
+}
