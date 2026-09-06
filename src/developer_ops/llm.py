@@ -3,6 +3,7 @@ import random
 from collections.abc import Awaitable, Callable
 
 from developer_ops.config import Settings
+from developer_ops.limits import Capacity
 from developer_ops.observability import log, stage
 from developer_ops.provider import LLMProvider, ProviderError
 
@@ -14,14 +15,16 @@ class LLMBoundary:
         self.provider = provider
         self.model = provider.model
         self.config = config
+        self.capacity = Capacity(config)
 
     async def _attempt(
         self, operation: str, call: Callable[[], Awaitable[str]], attempt: int
     ) -> str:
         with stage(operation, model=self.model, attempt=attempt):
             try:
-                async with asyncio.timeout(self.config.attempt_timeout_seconds):
-                    return await call()
+                async with self.capacity.acquire():
+                    async with asyncio.timeout(self.config.attempt_timeout_seconds):
+                        return await call()
             except TimeoutError:
                 raise ProviderError("timeout", retryable=True) from None
 

@@ -72,7 +72,12 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
 
     @app.post("/webhooks/github")
     async def webhook(request: Request) -> JSONResponse:
-        body = await request.body()
+        chunks = bytearray()
+        async for chunk in request.stream():
+            if len(chunks) + len(chunk) > config.max_webhook_bytes:
+                raise HTTPException(413, "Payload too large")
+            chunks.extend(chunk)
+        body = bytes(chunks)
         expected = (
             "sha256="
             + hmac.new(
