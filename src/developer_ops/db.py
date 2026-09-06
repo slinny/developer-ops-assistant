@@ -16,6 +16,7 @@ class Event(Base):
     payload: Mapped[dict[str, Any]] = mapped_column(JSON)
     status: Mapped[str] = mapped_column(default="received")
     error_category: Mapped[str | None]
+    usage: Mapped[dict[str, Any] | None] = mapped_column(JSON)
 
 
 class Task(Base):

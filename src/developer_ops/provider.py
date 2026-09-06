@@ -7,6 +7,7 @@ from typing import Protocol
 from openai import APIConnectionError, APIStatusError, APITimeoutError, AsyncOpenAI
 
 from developer_ops.schemas import DigestOutput, TaskUpdate
+from developer_ops.usage import LLMResponse, Usage
 
 
 class ProviderError(Exception):
@@ -16,18 +17,20 @@ class ProviderError(Exception):
         *,
         retryable: bool = False,
         retry_after: float | None = None,
+        response: LLMResponse | None = None,
     ) -> None:
         super().__init__(category)
         self.category = category
         self.retryable = retryable
         self.retry_after = retry_after
+        self.response = response
 
 
 class LLMProvider(Protocol):
     model: str
 
-    async def extract_task_update(self, context: str) -> str: ...
-    async def generate_digest(self, context: str) -> str: ...
+    async def extract_task_update(self, context: str) -> LLMResponse: ...
+    async def generate_digest(self, context: str) -> LLMResponse: ...
 
 
 class OpenAIProvider:
@@ -35,7 +38,9 @@ class OpenAIProvider:
         self.model = model
         self.client = AsyncOpenAI(api_key=api_key, max_retries=0)
 
-    async def _generate(self, context: str, schema: type[TaskUpdate] | type[DigestOutput]) -> str:
+    async def _generate(
+        self, context: str, schema: type[TaskUpdate] | type[DigestOutput]
+    ) -> LLMResponse:
         try:
             response = await self.client.responses.create(
                 model=self.model,
@@ -75,14 +80,25 @@ class OpenAIProvider:
                 retryable=status in {429, 500, 502, 503, 504},
                 retry_after=parse_retry_after(exc.response.headers.get("retry-after")),
             ) from None
+        usage = response.usage
+        result = LLMResponse(
+            response.output_text,
+            response.model,
+            Usage(
+                input_tokens=usage.input_tokens if usage else None,
+                output_tokens=usage.output_tokens if usage else None,
+                total_tokens=usage.total_tokens if usage else None,
+                cached_input_tokens=usage.input_tokens_details.cached_tokens if usage else None,
+            ),
+        )
         if response.status != "completed" or not response.output_text:
-            raise ProviderError("invalid_output")
-        return response.output_text
+            raise ProviderError("invalid_output", response=result)
+        return result
 
-    async def extract_task_update(self, context: str) -> str:
+    async def extract_task_update(self, context: str) -> LLMResponse:
         return await self._generate(context, TaskUpdate)
 
-    async def generate_digest(self, context: str) -> str:
+    async def generate_digest(self, context: str) -> LLMResponse:
         return await self._generate(context, DigestOutput)
 
     async def close(self) -> None:

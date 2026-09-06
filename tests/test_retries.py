@@ -8,6 +8,7 @@ from test_timeouts import config
 
 from developer_ops.llm import LLMBoundary
 from developer_ops.provider import OpenAIProvider, ProviderError, parse_retry_after
+from developer_ops.usage import LLMResponse
 
 
 @pytest.mark.parametrize(
@@ -60,7 +61,7 @@ async def test_retry_timing_and_attempt_cap(monkeypatch):
 async def test_nonretryable_and_eventual_success():
     provider = FakeProvider()
     provider.extract_task_update = AsyncMock(
-        side_effect=[ProviderError("connection", retryable=True), "valid"]
+        side_effect=[ProviderError("connection", retryable=True), LLMResponse("valid", "fake-v1")]
     )
     boundary = LLMBoundary(provider, config(retry_base_seconds=0))
     assert await boundary.extract_task_update("data") == "valid"

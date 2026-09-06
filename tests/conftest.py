@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 
 from developer_ops.app import create_app
 from developer_ops.config import Settings
+from developer_ops.usage import LLMResponse
 
 
 class FakeProvider:
@@ -17,11 +18,11 @@ class FakeProvider:
 
     async def extract_task_update(self, context):
         self.calls += 1
-        return '{"summary":"Fix cache invalidation", "category":"bug"}'
+        return LLMResponse('{"summary":"Fix cache invalidation", "category":"bug"}', self.model)
 
     async def generate_digest(self, context):
         self.calls += 1
-        return '{"summary":"Cache invalidation needs a fix."}'
+        return LLMResponse('{"summary":"Cache invalidation needs a fix."}', self.model)
 
 
 @pytest.fixture

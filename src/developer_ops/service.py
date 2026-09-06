@@ -6,13 +6,15 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from developer_ops.config import Settings
 from developer_ops.db import Database, Digest, Event, Task
+from developer_ops.llm import LLMBoundary
 from developer_ops.observability import log
-from developer_ops.provider import LLMProvider, ProviderError, task_context
+from developer_ops.provider import ProviderError, task_context
 from developer_ops.schemas import DigestOutput, GitHubItem, TaskUpdate, WebhookPayload
+from developer_ops.usage import aggregate, attempt_records
 
 
 class Processor:
-    def __init__(self, db: Database, provider: LLMProvider, config: Settings) -> None:
+    def __init__(self, db: Database, provider: LLMBoundary, config: Settings) -> None:
         self.db = db
         self.provider = provider
         self.config = config
@@ -32,7 +34,16 @@ class Processor:
                 log("event", "duplicate")
                 return {"event_id": event_id, "status": existing.status, "duplicate": True}
         log("event", "received")
-        await self.process(event_id, kind, payload.repository.full_name, item)
+        records: list[dict[str, object]] = []
+        token = attempt_records.set(records)
+        try:
+            await self.process(event_id, kind, payload.repository.full_name, item)
+        finally:
+            attempt_records.reset(token)
+            async with self.db.sessions.begin() as session:
+                event = await session.get(Event, event_id)
+                assert event is not None
+                event.usage = aggregate(records)
         async with self.db.sessions() as session:
             event = await session.get(Event, event_id)
             assert event is not None

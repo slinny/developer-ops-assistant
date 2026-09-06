@@ -21,3 +21,8 @@ class Settings(BaseSettings):
     requests_per_window: int = Field(default=120, ge=1, le=100000)
     rate_window_seconds: float = Field(default=60, gt=0, le=3600)
     max_webhook_bytes: int = Field(default=262144, ge=1024, le=1048576)
+    pricing_model: str | None = None
+    pricing_version: str | None = None
+    input_usd_per_million: float | None = Field(default=None, ge=0, allow_inf_nan=False)
+    cached_input_usd_per_million: float | None = Field(default=None, ge=0, allow_inf_nan=False)
+    output_usd_per_million: float | None = Field(default=None, ge=0, allow_inf_nan=False)

@@ -1,11 +1,14 @@
 import asyncio
 import random
+import time
 from collections.abc import Awaitable, Callable
+from dataclasses import asdict
 
 from developer_ops.config import Settings
 from developer_ops.limits import Capacity
 from developer_ops.observability import log, stage
 from developer_ops.provider import LLMProvider, ProviderError
+from developer_ops.usage import LLMResponse, Usage, attempt_records, estimated_cost
 
 
 class LLMBoundary:
@@ -18,17 +21,52 @@ class LLMBoundary:
         self.capacity = Capacity(config)
 
     async def _attempt(
-        self, operation: str, call: Callable[[], Awaitable[str]], attempt: int
+        self, operation: str, call: Callable[[], Awaitable[LLMResponse]], attempt: int
     ) -> str:
-        with stage(operation, model=self.model, attempt=attempt):
-            try:
-                async with self.capacity.acquire():
-                    async with asyncio.timeout(self.config.attempt_timeout_seconds):
-                        return await call()
-            except TimeoutError:
-                raise ProviderError("timeout", retryable=True) from None
+        started = time.monotonic()
+        dispatched = False
+        result: LLMResponse | None = None
+        outcome = "failed"
+        category: str | None = None
+        try:
+            with stage(operation, model=self.model, attempt=attempt):
+                try:
+                    async with self.capacity.acquire():
+                        async with asyncio.timeout(self.config.attempt_timeout_seconds):
+                            dispatched = True
+                            result = await call()
+                            outcome = "succeeded"
+                            return result.text
+                except TimeoutError:
+                    raise ProviderError("timeout", retryable=True) from None
+        except ProviderError as exc:
+            result = exc.response
+            category = exc.category
+            raise
+        except asyncio.CancelledError:
+            category = "cancelled"
+            raise
+        finally:
+            usage = result.usage if result else Usage()
+            model = result.model if result else self.model
+            record = {
+                "operation": operation,
+                "model": model,
+                "attempt": attempt,
+                "dispatched": dispatched,
+                "outcome": outcome,
+                "error_category": category,
+                "duration_ms": (time.monotonic() - started) * 1000,
+                **asdict(usage),
+                "estimated_cost_usd": estimated_cost(usage, model, self.config),
+                "pricing_version": self.config.pricing_version,
+            }
+            records = attempt_records.get()
+            if records is not None:
+                records.append(record)
+            log("llm.usage", outcome, **{k: v for k, v in record.items() if k != "outcome"})
 
-    async def _call(self, operation: str, call: Callable[[], Awaitable[str]]) -> str:
+    async def _call(self, operation: str, call: Callable[[], Awaitable[LLMResponse]]) -> str:
         try:
             async with asyncio.timeout(self.config.retry_budget_seconds):
                 for attempt in range(1, self.config.max_attempts + 1):

@@ -7,6 +7,7 @@ from test_timeouts import config
 from developer_ops.limits import Capacity
 from developer_ops.llm import LLMBoundary
 from developer_ops.provider import ProviderError
+from developer_ops.usage import LLMResponse
 
 
 async def test_concurrency_cap_and_bounded_queue():
@@ -22,7 +23,7 @@ async def test_concurrency_cap_and_bounded_queue():
         entered.set()
         try:
             await release.wait()
-            return "ok"
+            return LLMResponse("ok", "fake-v1")
         finally:
             active -= 1
 
