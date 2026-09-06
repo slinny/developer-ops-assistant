@@ -1,0 +1,1512 @@
+{
+  "provider": "fake-v1",
+  "events": 30,
+  "completed": 30,
+  "provider_calls": 60,
+  "p50_ms": 5.258,
+  "p95_ms": 12.252,
+  "tokens": null,
+  "estimated_cost_usd": null,
+  "samples": [
+    {
+      "event_id": "measure-0",
+      "request_id": "d030226d-d504-45ec-bc3f-d570c39d5180",
+      "outcome": "completed",
+      "latency_ms": 12.252,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.10175001807510853,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.053625088185071945,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-1",
+      "request_id": "d58600ff-dab2-4af6-b589-4e60b7f66027",
+      "outcome": "completed",
+      "latency_ms": 5.675,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.0685409177094698,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04137493669986725,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-2",
+      "request_id": "55bcd943-a6b9-4af5-9522-4f7dcfe3c8b3",
+      "outcome": "completed",
+      "latency_ms": 5.749,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05695805884897709,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05120900459587574,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-3",
+      "request_id": "7a496673-0998-4b36-9d04-39ab046c30cb",
+      "outcome": "completed",
+      "latency_ms": 5.555,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05925004370510578,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04133302718400955,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-4",
+      "request_id": "4338e30e-40a1-4131-a032-f7a699a8fd56",
+      "outcome": "completed",
+      "latency_ms": 5.015,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04987511783838272,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03737513907253742,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-5",
+      "request_id": "af97a384-7ea2-4278-89ac-37665dab6490",
+      "outcome": "completed",
+      "latency_ms": 5.098,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.051083043217659,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.039499951526522636,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-6",
+      "request_id": "5c8f687f-0d22-46d7-beb9-f065f145ecc0",
+      "outcome": "completed",
+      "latency_ms": 5.423,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05283299833536148,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.039499951526522636,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-7",
+      "request_id": "4dd5c155-aff7-462f-a660-7d0980185d6c",
+      "outcome": "completed",
+      "latency_ms": 4.99,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05174987018108368,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03674998879432678,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-8",
+      "request_id": "873e1db4-e419-4bd4-a2ef-b538a508f309",
+      "outcome": "completed",
+      "latency_ms": 4.905,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05070795305073261,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05366699770092964,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-9",
+      "request_id": "7179ee29-634a-4966-b38d-ae63764c2b7b",
+      "outcome": "completed",
+      "latency_ms": 5.023,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05495804361999035,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.043708132579922676,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-10",
+      "request_id": "5f67ad42-20b4-4c9c-9450-7a5c90825067",
+      "outcome": "completed",
+      "latency_ms": 4.925,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.055791810154914856,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03837491385638714,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-11",
+      "request_id": "62f6c947-62c6-4251-a802-0c912512a223",
+      "outcome": "completed",
+      "latency_ms": 5.016,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05425000563263893,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04145805723965168,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-12",
+      "request_id": "52c29587-1eb3-4ee2-bbc1-0dafbcde2172",
+      "outcome": "completed",
+      "latency_ms": 5.119,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05641719326376915,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.038082944229245186,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-13",
+      "request_id": "926152a5-95ad-4cc7-9946-196a23614474",
+      "outcome": "completed",
+      "latency_ms": 5.05,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.053459079936146736,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04170904867351055,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-14",
+      "request_id": "a4499a45-e449-4f41-9065-e3aa7202fa30",
+      "outcome": "completed",
+      "latency_ms": 5.305,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.054208096116781235,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.039125094190239906,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-15",
+      "request_id": "939af833-91c4-45e4-91bd-b02cbdaf3c4f",
+      "outcome": "completed",
+      "latency_ms": 4.999,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.054791802540421486,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.038499943912029266,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-16",
+      "request_id": "2f04f4cc-b03c-4b38-945c-e276b0a9d86b",
+      "outcome": "completed",
+      "latency_ms": 4.802,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05620904266834259,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.038624973967671394,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-17",
+      "request_id": "a83fb6d4-df7c-4afc-b5eb-50adde193b68",
+      "outcome": "completed",
+      "latency_ms": 6.701,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.12387498281896114,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.055916840210556984,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-18",
+      "request_id": "e5f3b7b3-28ce-4b68-8588-3e0bdbe0057d",
+      "outcome": "completed",
+      "latency_ms": 5.599,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.06262492388486862,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04004104994237423,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-19",
+      "request_id": "bdcdd452-56eb-4ea5-9a38-a47f62cb103a",
+      "outcome": "completed",
+      "latency_ms": 5.261,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05379202775657177,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03875000402331352,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-20",
+      "request_id": "ef8d59e2-0728-4054-8614-9840cc13098a",
+      "outcome": "completed",
+      "latency_ms": 5.173,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04924996756017208,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.0392089132219553,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-21",
+      "request_id": "15ea2560-9c32-4f49-b619-75d915e2775c",
+      "outcome": "completed",
+      "latency_ms": 5.165,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05475012585520744,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03820913843810558,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-22",
+      "request_id": "171a4c67-8ee1-4f22-ae35-dd17073d6a48",
+      "outcome": "completed",
+      "latency_ms": 5.203,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.053208088502287865,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.0385830644518137,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-23",
+      "request_id": "542c8f7a-a5fd-40dd-92f6-6d8ce20971ca",
+      "outcome": "completed",
+      "latency_ms": 5.714,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05224999040365219,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.039250124245882034,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-24",
+      "request_id": "f0cdc1d6-504e-43e8-9e63-eaaa782bbc80",
+      "outcome": "completed",
+      "latency_ms": 5.306,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.06087496876716614,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.042708124965429306,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-25",
+      "request_id": "f9a05b8f-f4eb-4cfa-ace9-25f2b9ce9649",
+      "outcome": "completed",
+      "latency_ms": 5.256,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05383417010307312,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04100007936358452,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-26",
+      "request_id": "2843d6eb-c20a-4b45-ac78-be7d23b77194",
+      "outcome": "completed",
+      "latency_ms": 8.973,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.06745895370841026,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.04687509499490261,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-27",
+      "request_id": "25d0353b-3ced-4897-bbf6-01a8b30339a3",
+      "outcome": "completed",
+      "latency_ms": 5.889,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.07208413444459438,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03941589966416359,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-28",
+      "request_id": "cbddb966-c649-4436-bcec-b01f198cbf9d",
+      "outcome": "completed",
+      "latency_ms": 9.05,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.05941581912338734,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.0463330652564764,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    },
+    {
+      "event_id": "measure-29",
+      "request_id": "373b0da4-cbf2-4a99-9451-a16b30ed1151",
+      "outcome": "completed",
+      "latency_ms": 13.181,
+      "retries": 0,
+      "usage": {
+        "attempts": [
+          {
+            "operation": "llm.extract",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.061583006754517555,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          },
+          {
+            "operation": "llm.digest",
+            "model": "fake-v1",
+            "attempt": 1,
+            "dispatched": true,
+            "outcome": "succeeded",
+            "error_category": null,
+            "duration_ms": 0.03933394327759743,
+            "input_tokens": null,
+            "output_tokens": null,
+            "total_tokens": null,
+            "cached_input_tokens": null,
+            "estimated_cost_usd": null,
+            "pricing_version": null
+          }
+        ],
+        "dispatched_attempts": 2,
+        "input_tokens": null,
+        "known_input_tokens": 0,
+        "output_tokens": null,
+        "known_output_tokens": 0,
+        "total_tokens": null,
+        "known_total_tokens": 0,
+        "estimated_cost_usd": null,
+        "known_estimated_cost_usd": 0
+      }
+    }
+  ]
+}

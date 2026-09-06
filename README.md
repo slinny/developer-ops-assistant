@@ -30,3 +30,20 @@ Tests use a fake LLM and temporary SQLite databases; no credentials or network r
 The OpenAI adapter uses the Responses API with JSON Schema structured outputs:
 [official API guide](https://developers.openai.com/api/docs/guides/structured-outputs).
 Model selection is configurable. Pricing will remain unknown unless explicitly configured.
+
+## Reliability milestone
+
+The provider boundary adds cancellable deadlines, bounded retries with backoff and
+jitter, process-local capacity/rate limits and per-attempt usage accounting. Task
+updates and event digests commit atomically after strict validation. JSON logs
+correlate requests and delivery IDs. Duplicate deliveries cannot repeat LLM work.
+
+- [Architecture, configuration and failure semantics](docs/reliability.md)
+- [Ingestion baseline](docs/ingestion.md)
+- [Failure-injection results](docs/failure-injection.md)
+- [Streaming decision](docs/streaming.md)
+- [Final local measurements](docs/milestone-results.json)
+
+Use one worker and `--limit-concurrency 32` for the Phase 1 server. This is a local,
+inline processor; queues, crash recovery, replay, RAG and deployment remain future
+phases. All recorded timings use simulated providers, not live OpenAI requests.

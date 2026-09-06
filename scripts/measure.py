@@ -13,11 +13,13 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from developer_ops.app import create_app  # noqa: E402
 from developer_ops.config import Settings  # noqa: E402
+from developer_ops.db import Event  # noqa: E402
 
 
 def main():
     durations = []
     outcomes = []
+    events = []
     provider = FakeProvider()
     with tempfile.TemporaryDirectory() as directory:
         config = Settings(
@@ -37,6 +39,23 @@ def main():
                 )
                 durations.append((time.perf_counter() - started) * 1000)
                 outcomes.append(response.json()["status"])
+
+                async def read_usage():
+                    async with client.app.state.db.sessions() as session:
+                        event = await session.get(Event, f"measure-{index}")
+                        return event.usage
+
+                usage = client.portal.call(read_usage)
+                events.append(
+                    {
+                        "event_id": response.json()["event_id"],
+                        "request_id": response.headers["x-request-id"],
+                        "outcome": response.json()["status"],
+                        "latency_ms": round(durations[-1], 3),
+                        "retries": sum(r["attempt"] > 1 for r in usage["attempts"]),
+                        "usage": usage,
+                    }
+                )
     print(
         json.dumps(
             {
@@ -48,6 +67,7 @@ def main():
                 "p95_ms": round(sorted(durations)[28], 3),
                 "tokens": None,
                 "estimated_cost_usd": None,
+                "samples": events,
             },
             indent=2,
         )
