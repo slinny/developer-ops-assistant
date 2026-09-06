@@ -32,3 +32,19 @@ def test_invalid_payload(client, provider):
 
 def test_digest_requires_auth(client):
     assert client.get("/digests").status_code == 401
+
+
+def test_event_is_durable_before_llm(client, provider):
+    from developer_ops.db import Event
+
+    original = provider.extract_task_update
+
+    async def inspect(context):
+        async with client.app.state.db.sessions() as session:
+            event = await session.get(Event, "delivery-1")
+            assert event.status == "processing"
+            assert event.payload["repository"]["full_name"] == "example/project"
+        return await original(context)
+
+    provider.extract_task_update = inspect
+    assert send(client).status_code == 200
