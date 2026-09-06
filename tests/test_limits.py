@@ -67,3 +67,21 @@ async def test_rate_budget_window_and_release(monkeypatch):
 def test_oversized_body(client, provider):
     assert client.post("/webhooks/github", content=b"x" * 262145).status_code == 413
     assert provider.calls == 0
+
+
+async def test_cancelled_waiter_does_not_leak_permits():
+    capacity = Capacity(config(max_concurrency=1))
+
+    async def waiter():
+        async with capacity.acquire():
+            pytest.fail("acquired occupied slot")
+
+    async with capacity.acquire():
+        task = asyncio.create_task(waiter())
+        await asyncio.sleep(0)
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+    assert capacity.waiters == 0
+    async with capacity.acquire():
+        pass

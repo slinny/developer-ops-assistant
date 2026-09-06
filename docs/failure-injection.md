@@ -30,3 +30,8 @@ Remaining limits: hard process kills, disk failure during failure recording,
 ambiguous commit acknowledgment, distributed limits, durable queue/redelivery and
 real-provider measurements need separate validation. Phase 3 owns worker crash
 recovery; this milestone must not claim it.
+
+Final review added five regression tests (70 total): lost commit acknowledgement
+preserves completed state and releases its connection; non-ASCII auth is rejected;
+database outage responses stay safe and correlated; a cancelled capacity waiter
+releases its place; and invalid/incomplete response usage is retained for accounting.

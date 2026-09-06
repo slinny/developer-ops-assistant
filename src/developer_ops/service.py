@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from developer_ops.config import Settings
 from developer_ops.db import Database, Digest, Event, Task
 from developer_ops.llm import LLMBoundary
-from developer_ops.observability import log
+from developer_ops.observability import log, stage
 from developer_ops.provider import ProviderError, task_context
 from developer_ops.schemas import DigestOutput, GitHubItem, TaskUpdate, WebhookPayload
 from developer_ops.usage import aggregate, attempt_records
@@ -61,53 +61,56 @@ class Processor:
     async def process(self, event_id: str, kind: str, repository: str, item: GitHubItem) -> None:
         try:
             async with asyncio.timeout(self.config.processing_deadline_seconds):
-                async with self.db.sessions.begin() as session:
+                async with self.db.transaction() as session:
                     event = await session.get(Event, event_id)
                     assert event is not None
                     event.status = "processing"
                 log("event", "processing")
                 context = task_context(repository, kind, item.model_dump(mode="json"))
-                update = TaskUpdate.model_validate_json(
-                    await self.provider.extract_task_update(context)
+                raw_update = await self.provider.extract_task_update(context)
+                with stage("validation.extract"):
+                    update = TaskUpdate.model_validate_json(raw_update)
+                raw_digest = await self.provider.generate_digest(
+                    context + "\n" + update.model_dump_json()
                 )
-                digest = DigestOutput.model_validate_json(
-                    await self.provider.generate_digest(context + "\n" + update.model_dump_json())
-                )
+                with stage("validation.digest"):
+                    digest = DigestOutput.model_validate_json(raw_digest)
                 # No database write transaction is held across either external call.
-                async with self.db.sessions.begin() as session:
-                    statement = insert(Task).values(
-                        repository=repository,
-                        kind=kind,
-                        number=item.number,
-                        state=item.state,
-                        source_updated_at=item.updated_at.astimezone(UTC).isoformat(
-                            timespec="microseconds"
-                        ),
-                        summary=update.summary,
-                        category=update.category,
-                        event_id=event_id,
-                    )
-                    await session.execute(
-                        statement.on_conflict_do_update(
-                            index_elements=[Task.repository, Task.kind, Task.number],
-                            set_={
-                                name: getattr(statement.excluded, name)
-                                for name in (
-                                    "state",
-                                    "source_updated_at",
-                                    "summary",
-                                    "category",
-                                    "event_id",
-                                )
-                            },
-                            where=statement.excluded.source_updated_at > Task.source_updated_at,
+                with stage("persistence.commit"):
+                    async with self.db.transaction() as session:
+                        statement = insert(Task).values(
+                            repository=repository,
+                            kind=kind,
+                            number=item.number,
+                            state=item.state,
+                            source_updated_at=item.updated_at.astimezone(UTC).isoformat(
+                                timespec="microseconds"
+                            ),
+                            summary=update.summary,
+                            category=update.category,
+                            event_id=event_id,
                         )
-                    )
-                    session.add(Digest(event_id=event_id, summary=digest.summary))
-                    event = await session.get(Event, event_id)
-                    assert event is not None
-                    event.status = "completed"
-                    event.usage = aggregate(attempt_records.get() or [])
+                        await session.execute(
+                            statement.on_conflict_do_update(
+                                index_elements=[Task.repository, Task.kind, Task.number],
+                                set_={
+                                    name: getattr(statement.excluded, name)
+                                    for name in (
+                                        "state",
+                                        "source_updated_at",
+                                        "summary",
+                                        "category",
+                                        "event_id",
+                                    )
+                                },
+                                where=statement.excluded.source_updated_at > Task.source_updated_at,
+                            )
+                        )
+                        session.add(Digest(event_id=event_id, summary=digest.summary))
+                        event = await session.get(Event, event_id)
+                        assert event is not None
+                        event.status = "completed"
+                        event.usage = aggregate(attempt_records.get() or [])
                 log("event", "completed")
         except (Exception, asyncio.CancelledError) as exc:
             category = (
@@ -123,12 +126,22 @@ class Processor:
                 if isinstance(exc, asyncio.CancelledError)
                 else "internal"
             )
-            async with self.db.sessions.begin() as session:
-                event = await session.get(Event, event_id)
-                assert event is not None
-                event.status = "failed"
-                event.error_category = category
-                event.usage = aggregate(attempt_records.get() or [])
-            log("event", "failed", error_category=category)
+            log("processing.error", "failed", error_category=category)
+            # Commit acknowledgement can fail after SQLite committed successfully.
+            # Re-read durable state rather than overwriting completed with failed.
+            with stage("persistence.failure"):
+                async with self.db.transaction() as session:
+                    event = await session.get(Event, event_id)
+                    assert event is not None
+                    if event.status != "completed":
+                        event.status = "failed"
+                        event.error_category = category
+                        event.usage = aggregate(attempt_records.get() or [])
+                    durable_status = event.status
+            log(
+                "event",
+                durable_status,
+                error_category=category if durable_status == "failed" else None,
+            )
             if isinstance(exc, asyncio.CancelledError):
                 raise

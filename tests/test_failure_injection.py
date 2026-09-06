@@ -120,3 +120,33 @@ def test_unexpected_provider_error_is_safe_and_not_retried(client, provider, cap
     assert provider.extract_task_update.await_count == 1
     assert "SECRET" not in str([r.fields for r in caplog.records if r.name == "developer_ops"])
     assert snapshot(client)["tasks"] == snapshot(client)["digests"] == []
+
+
+def test_non_ascii_auth_headers_return_401(client):
+    assert (
+        client.post(
+            "/webhooks/github", content=b"{}", headers=[(b"x-hub-signature-256", b"\xff")]
+        ).status_code
+        == 401
+    )
+    assert client.get("/digests", headers=[(b"authorization", b"\xff")]).status_code == 401
+
+
+def test_database_outage_returns_safe_failure(client, caplog):
+    from sqlalchemy import event
+    from sqlalchemy.exc import OperationalError
+
+    engine = client.app.state.db.engine.sync_engine
+
+    def fail(*args):
+        raise OperationalError("SECRET", None, Exception("SECRET"))
+
+    event.listen(engine, "before_cursor_execute", fail)
+    try:
+        assert send(client).status_code == 503
+        response = client.get("/digests", headers={"Authorization": "Bearer test-token"})
+        assert response.status_code == 503
+        assert response.headers["x-request-id"]
+    finally:
+        event.remove(engine, "before_cursor_execute", fail)
+    assert "SECRET" not in str([r.fields for r in caplog.records if r.name == "developer_ops"])

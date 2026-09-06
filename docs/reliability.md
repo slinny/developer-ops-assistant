@@ -85,6 +85,9 @@ Failure categories include `timeout`, `deadline`, `retry_deadline`, `connection`
 A failed digest cannot leave a partial task change or a valid-looking digest.
 Failures are persisted when the DB is available. A database outage can prevent
 failure recording; it remains an unsuccessful response, not a fabricated success.
+If a completion commit loses its acknowledgment, failure handling re-reads durable
+state and preserves an already completed event. Session cleanup runs even when
+commit raises. This does not replace hard-kill recovery testing.
 The processing deadline begins after durable receipt; request upload and failure
 recording are outside that deadline. SQLite lock waits are bounded to five seconds.
 
@@ -95,7 +98,9 @@ event_id, stage, duration_ms, model, attempt, outcome and error_category. Reques
 IDs are server-generated, returned in `x-request-id`, and isolated using ContextVar.
 Event IDs are validated delivery IDs; they are untrusted until HMAC validation.
 `llm.usage` adds dispatched status, operation, tokens, cached tokens, estimated USD,
-and pricing version. Retry logs include delay_seconds. No body, prompt, generated
+and pricing version. Retry logs include delay_seconds. Attempt duration includes capacity wait;
+provider_latency_ms measures dispatched work separately. Validation and transaction
+stages are logged explicitly. No body, prompt, generated
 summary, authorization header, key or exception text is logged by the application.
 
 `Event.usage` preserves per-attempt records and event totals across extraction,

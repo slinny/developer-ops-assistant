@@ -64,3 +64,22 @@ def test_usage_persisted_for_event_and_digest(client):
             }
 
     client.portal.call(inspect)
+
+
+async def test_failed_response_usage_is_not_lost():
+    provider = FakeProvider()
+    provider.extract_task_update = AsyncMock(
+        side_effect=ProviderError(
+            "invalid_output", response=LLMResponse("", "fake-v1", Usage(100, 20, 120, 10))
+        )
+    )
+    records = []
+    token = attempt_records.set(records)
+    try:
+        with pytest.raises(ProviderError):
+            await LLMBoundary(provider, priced_config()).extract_task_update("data")
+    finally:
+        attempt_records.reset(token)
+    assert aggregate(records)["total_tokens"] == 120
+    assert aggregate(records)["estimated_cost_usd"] == pytest.approx(0.000135)
+    assert records[0]["provider_latency_ms"] >= 0

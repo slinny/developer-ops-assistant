@@ -6,6 +6,8 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import Any
 
+from pydantic import ValidationError
+
 request_id: ContextVar[str | None] = ContextVar("request_id", default=None)
 event_id: ContextVar[str | None] = ContextVar("event_id", default=None)
 logger = logging.getLogger("developer_ops")
@@ -66,7 +68,9 @@ def stage(name: str, *, model: str | None = None, attempt: int | None = None) ->
             model=model,
             attempt=attempt,
             duration_ms=(time.monotonic() - start) * 1000,
-            error_category=getattr(exc, "category", "internal"),
+            error_category="invalid_output"
+            if isinstance(exc, ValidationError)
+            else getattr(exc, "category", "internal"),
         )
         raise
     else:

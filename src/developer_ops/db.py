@@ -1,7 +1,9 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Any
 
 from sqlalchemy import JSON, ForeignKey, String, UniqueConstraint, event
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -52,6 +54,13 @@ class Database:
             cursor.close()
 
         self.sessions = async_sessionmaker(self.engine, expire_on_commit=False)
+
+    @asynccontextmanager
+    async def transaction(self) -> AsyncIterator[AsyncSession]:
+        # Independent outer session cleanup also runs if commit acknowledgement raises.
+        async with self.sessions() as session:
+            async with session.begin():
+                yield session
 
     async def initialize(self) -> None:
         async with self.engine.begin() as conn:

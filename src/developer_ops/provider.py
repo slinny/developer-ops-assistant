@@ -88,7 +88,9 @@ class OpenAIProvider:
                 input_tokens=usage.input_tokens if usage else None,
                 output_tokens=usage.output_tokens if usage else None,
                 total_tokens=usage.total_tokens if usage else None,
-                cached_input_tokens=usage.input_tokens_details.cached_tokens if usage else None,
+                cached_input_tokens=usage.input_tokens_details.cached_tokens
+                if usage and usage.input_tokens_details
+                else None,
             ),
         )
         if response.status != "completed" or not response.output_text:

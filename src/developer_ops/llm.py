@@ -25,6 +25,7 @@ class LLMBoundary:
     ) -> str:
         started = time.monotonic()
         dispatched = False
+        dispatched_at: float | None = None
         result: LLMResponse | None = None
         outcome = "failed"
         category: str | None = None
@@ -34,6 +35,7 @@ class LLMBoundary:
                     async with self.capacity.acquire():
                         async with asyncio.timeout(self.config.attempt_timeout_seconds):
                             dispatched = True
+                            dispatched_at = time.monotonic()
                             result = await call()
                             outcome = "succeeded"
                             return result.text
@@ -46,6 +48,9 @@ class LLMBoundary:
         except asyncio.CancelledError:
             category = "cancelled"
             raise
+        except Exception:
+            category = "internal"
+            raise
         finally:
             usage = result.usage if result else Usage()
             model = result.model if result else self.model
@@ -57,6 +62,9 @@ class LLMBoundary:
                 "outcome": outcome,
                 "error_category": category,
                 "duration_ms": (time.monotonic() - started) * 1000,
+                "provider_latency_ms": (time.monotonic() - dispatched_at) * 1000
+                if dispatched_at is not None
+                else None,
                 **asdict(usage),
                 "estimated_cost_usd": estimated_cost(usage, model, self.config),
                 "pricing_version": self.config.pricing_version,

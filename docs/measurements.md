@@ -1,11 +1,11 @@
 # Local milestone measurements
 
-| Zero-delay fake provider, 30 sequential signed events | Baseline | Step 10 |
+| Zero-delay fake provider, 30 sequential signed events | Baseline | Final |
 | --- | --- | --- |
 | Completed | 30/30 | 30/30 |
 | Provider calls | 60 | 60 |
-| p50 application latency | 6.310 ms | 5.258 ms |
-| p95 application latency | 8.674 ms | 12.252 ms |
+| p50 application latency | 6.310 ms | 5.387 ms |
+| p95 application latency | 8.674 ms | 6.983 ms |
 | Retries in happy-path run | 0 | 0 |
 | Token usage / estimated dollars | Unknown | Unknown |
 
@@ -25,7 +25,7 @@ output $2/M). 100 input tokens (10 cached) plus 20 output tokens yields $0.00013
 A preceding unknown-usage retry makes the full event cost unknown; that known
 amount remains only a partial subtotal. These rates are not provider prices.
 
-Step 10 verification: 65 tests passed; Ruff and strict mypy passed. Two deprecation
+Final verification: 70 tests passed; Ruff and strict mypy passed. Two deprecation
 warnings originate in the installed Starlette TestClient compatibility layer.
 `requirements-dev.lock` records the tested package versions on Python 3.13.1.
 No live API, cloud deployment, load test or model-quality evaluation was performed.

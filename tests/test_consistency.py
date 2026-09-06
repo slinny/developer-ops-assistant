@@ -97,3 +97,27 @@ def test_older_event_cannot_overwrite_newer_task(client):
 def test_invalid_timestamp_rejected(client, provider):
     assert send(client, updated_at="yesterday").status_code == 422
     assert provider.calls == 0
+
+
+def test_commit_acknowledgment_failure_preserves_completed(client):
+    from sqlalchemy.orm import Session
+
+    commits = []
+
+    def fail_after_commit(session):
+        commits.append(True)
+        if len(commits) == 3:  # receipt, processing, then atomic completion
+            raise OperationalError("ack lost", None, Exception("commit was durable"))
+
+    event.listen(Session, "after_commit", fail_after_commit)
+    try:
+        response = send(client)
+    finally:
+        event.remove(Session, "after_commit", fail_after_commit)
+    assert response.status_code == 200
+    assert snapshot(client) == {
+        "tasks": [("open", "delivery-1")],
+        "digests": ["delivery-1"],
+        "events": [("delivery-1", "completed")],
+    }
+    assert client.app.state.db.engine.sync_engine.pool.checkedout() == 0

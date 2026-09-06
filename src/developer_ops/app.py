@@ -2,13 +2,13 @@ import hashlib
 import hmac
 import re
 import time
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from typing import Annotated
 from uuid import uuid4
 
 from fastapi import FastAPI, Header, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from pydantic import ValidationError
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -36,18 +36,25 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        await db.initialize()
-        yield
-        if isinstance(llm, OpenAIProvider):
-            await llm.close()
-        await db.close()
+        try:
+            await db.initialize()
+            yield
+        finally:
+            try:
+                if isinstance(llm, OpenAIProvider):
+                    await llm.close()
+            finally:
+                await db.close()
 
     app = FastAPI(lifespan=lifespan)
     app.state.db = db
     app.state.processor = processor
 
     @app.middleware("http")
-    async def correlation(request: Request, call_next):  # type: ignore[no-untyped-def]
+    async def correlation(
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
+    ) -> Response:
         rid = request_id.set(str(uuid4()))
         supplied = request.headers.get("x-github-delivery", "")
         eid = event_context.set(
@@ -56,7 +63,14 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
         started = time.monotonic()
         log("request", "started")
         try:
-            response = await call_next(request)
+            try:
+                response = await call_next(request)
+            except Exception as exc:
+                category = "database" if isinstance(exc, SQLAlchemyError) else "internal"
+                log("request.error", "failed", error_category=category)
+                response = JSONResponse(
+                    {"error_category": category}, status_code=503 if category == "database" else 500
+                )
             response.headers["x-request-id"] = request_id.get() or ""
             log(
                 "request",
@@ -84,7 +98,9 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
                 config.webhook_secret.get_secret_value().encode(), body, hashlib.sha256
             ).hexdigest()
         )
-        if not hmac.compare_digest(request.headers.get("x-hub-signature-256", ""), expected):
+        if not hmac.compare_digest(
+            request.headers.get("x-hub-signature-256", "").encode(), expected.encode()
+        ):
             raise HTTPException(401, "Invalid signature")
         kind = request.headers.get("x-github-event", "")
         if kind == "ping":
@@ -118,7 +134,8 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
         authorization: Annotated[str | None, Header()] = None,
     ) -> list[dict[str, str]]:
         if not hmac.compare_digest(
-            authorization or "", "Bearer " + config.api_token.get_secret_value()
+            (authorization or "").encode(),
+            ("Bearer " + config.api_token.get_secret_value()).encode(),
         ):
             raise HTTPException(401, "Invalid token")
         async with db.sessions() as session:
