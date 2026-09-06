@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from developer_ops.db import Database, Digest, Event, Task
+from developer_ops.observability import log
 from developer_ops.provider import LLMProvider, ProviderError, task_context
 from developer_ops.schemas import DigestOutput, GitHubItem, TaskUpdate, WebhookPayload
 
@@ -24,7 +25,9 @@ class Processor:
                 existing = await session.get(Event, event_id)
                 if existing is None:
                     raise
+                log("event", "duplicate")
                 return {"event_id": event_id, "status": existing.status, "duplicate": True}
+        log("event", "received")
         await self.process(event_id, kind, payload.repository.full_name, item)
         async with self.db.sessions() as session:
             event = await session.get(Event, event_id)
@@ -42,6 +45,7 @@ class Processor:
                 event = await session.get(Event, event_id)
                 assert event is not None
                 event.status = "processing"
+            log("event", "processing")
             context = task_context(repository, kind, item.model_dump())
             update = TaskUpdate.model_validate_json(
                 await self.provider.extract_task_update(context)
@@ -70,6 +74,7 @@ class Processor:
                 event = await session.get(Event, event_id)
                 assert event is not None
                 event.status = "completed"
+            log("event", "completed")
         except (ProviderError, ValidationError, SQLAlchemyError) as exc:
             category = (
                 exc.category
@@ -83,3 +88,4 @@ class Processor:
                 assert event is not None
                 event.status = "failed"
                 event.error_category = category
+            log("event", "failed", error_category=category)

@@ -1,9 +1,11 @@
 import hashlib
 import hmac
 import re
+import time
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Annotated
+from uuid import uuid4
 
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -13,6 +15,9 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from developer_ops.config import Settings
 from developer_ops.db import Database, Digest
+from developer_ops.llm import LLMBoundary
+from developer_ops.observability import configure_logging, log, request_id
+from developer_ops.observability import event_id as event_context
 from developer_ops.provider import LLMProvider, OpenAIProvider
 from developer_ops.schemas import WebhookPayload
 from developer_ops.service import Processor
@@ -26,7 +31,8 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             raise ValueError("DOA_OPENAI_API_KEY is required")
         provider = OpenAIProvider(config.openai_api_key.get_secret_value(), config.model)
     llm = provider
-    processor = Processor(db, llm)
+    processor = Processor(db, LLMBoundary(llm))
+    configure_logging()
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -39,6 +45,30 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
     app = FastAPI(lifespan=lifespan)
     app.state.db = db
     app.state.processor = processor
+
+    @app.middleware("http")
+    async def correlation(request: Request, call_next):  # type: ignore[no-untyped-def]
+        rid = request_id.set(str(uuid4()))
+        supplied = request.headers.get("x-github-delivery", "")
+        eid = event_context.set(
+            supplied if re.fullmatch(r"[A-Za-z0-9-]{1,128}", supplied) else None
+        )
+        started = time.monotonic()
+        log("request", "started")
+        try:
+            response = await call_next(request)
+            response.headers["x-request-id"] = request_id.get() or ""
+            log(
+                "request",
+                "succeeded" if response.status_code < 400 else "failed",
+                duration_ms=(time.monotonic() - started) * 1000,
+                error_category=None if response.status_code < 400 else "http_error",
+                status_code=response.status_code,
+            )
+            return response
+        finally:
+            request_id.reset(rid)
+            event_context.reset(eid)
 
     @app.post("/webhooks/github")
     async def webhook(request: Request) -> JSONResponse:
