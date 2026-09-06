@@ -1,0 +1,14 @@
+{
+  "transport": "simulated 8-character chunks at 2ms intervals",
+  "streaming": {
+    "first_chunk_ms": 2.2875829599797726,
+    "first_useful_output_ms": 13.69445794261992,
+    "total_ms": 13.69445794261992,
+    "summary": "Cache invalidation needs a fix."
+  },
+  "ordinary": {
+    "first_useful_output_ms": 13.653832953423262,
+    "total_ms": 13.653832953423262
+  },
+  "decision": "Keep production non-streaming; no partial-output consumer."
+}
