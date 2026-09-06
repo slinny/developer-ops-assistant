@@ -1,6 +1,6 @@
 from typing import Any
 
-from sqlalchemy import JSON, ForeignKey, String, UniqueConstraint
+from sqlalchemy import JSON, ForeignKey, String, UniqueConstraint, event
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -41,7 +41,16 @@ class Digest(Base):
 
 class Database:
     def __init__(self, url: str) -> None:
-        self.engine = create_async_engine(url)
+        if not url.startswith("sqlite+aiosqlite:"):
+            raise ValueError("Phase 1 requires sqlite+aiosqlite")
+        self.engine = create_async_engine(url, connect_args={"timeout": 5})
+
+        @event.listens_for(self.engine.sync_engine, "connect")
+        def configure_sqlite(connection: Any, record: Any) -> None:
+            cursor = connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+
         self.sessions = async_sessionmaker(self.engine, expire_on_commit=False)
 
     async def initialize(self) -> None:

@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 
 class GitHubItem(BaseModel):
@@ -8,7 +8,7 @@ class GitHubItem(BaseModel):
     title: str = Field(min_length=1, max_length=1000)
     body: str | None = Field(default=None, max_length=100000)
     state: Literal["open", "closed"]
-    updated_at: str
+    updated_at: AwareDatetime
 
 
 class Repository(BaseModel):
@@ -23,11 +23,11 @@ class WebhookPayload(BaseModel):
 
 
 class TaskUpdate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", strict=True, str_strip_whitespace=True)
     summary: str = Field(min_length=1, max_length=2000)
     category: Literal["bug", "feature", "maintenance", "question"]
 
 
 class DigestOutput(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", strict=True, str_strip_whitespace=True)
     summary: str = Field(min_length=1, max_length=4000)

@@ -1,7 +1,8 @@
 import asyncio
+from datetime import UTC
 
 from pydantic import ValidationError
-from sqlalchemy import select
+from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from developer_ops.config import Settings
@@ -31,6 +32,13 @@ class Processor:
                 existing = await session.get(Event, event_id)
                 if existing is None:
                     raise
+                if existing.kind != kind or existing.payload != payload.model_dump(mode="json"):
+                    return {
+                        "event_id": event_id,
+                        "status": "conflict",
+                        "duplicate": True,
+                        "error_category": "delivery_conflict",
+                    }
                 log("event", "duplicate")
                 return {"event_id": event_id, "status": existing.status, "duplicate": True}
         log("event", "received")
@@ -40,10 +48,6 @@ class Processor:
             await self.process(event_id, kind, payload.repository.full_name, item)
         finally:
             attempt_records.reset(token)
-            async with self.db.sessions.begin() as session:
-                event = await session.get(Event, event_id)
-                assert event is not None
-                event.usage = aggregate(records)
         async with self.db.sessions() as session:
             event = await session.get(Event, event_id)
             assert event is not None
@@ -62,36 +66,50 @@ class Processor:
                     assert event is not None
                     event.status = "processing"
                 log("event", "processing")
-                context = task_context(repository, kind, item.model_dump())
+                context = task_context(repository, kind, item.model_dump(mode="json"))
                 update = TaskUpdate.model_validate_json(
                     await self.provider.extract_task_update(context)
                 )
+                digest = DigestOutput.model_validate_json(
+                    await self.provider.generate_digest(context + "\n" + update.model_dump_json())
+                )
+                # No database write transaction is held across either external call.
                 async with self.db.sessions.begin() as session:
-                    task = await session.scalar(
-                        select(Task).where(
-                            Task.repository == repository,
-                            Task.kind == kind,
-                            Task.number == item.number,
+                    statement = insert(Task).values(
+                        repository=repository,
+                        kind=kind,
+                        number=item.number,
+                        state=item.state,
+                        source_updated_at=item.updated_at.astimezone(UTC).isoformat(
+                            timespec="microseconds"
+                        ),
+                        summary=update.summary,
+                        category=update.category,
+                        event_id=event_id,
+                    )
+                    await session.execute(
+                        statement.on_conflict_do_update(
+                            index_elements=[Task.repository, Task.kind, Task.number],
+                            set_={
+                                name: getattr(statement.excluded, name)
+                                for name in (
+                                    "state",
+                                    "source_updated_at",
+                                    "summary",
+                                    "category",
+                                    "event_id",
+                                )
+                            },
+                            where=statement.excluded.source_updated_at > Task.source_updated_at,
                         )
                     )
-                    if task is None:
-                        task = Task(repository=repository, kind=kind, number=item.number)
-                        session.add(task)
-                    task.state = item.state
-                    task.source_updated_at = item.updated_at
-                    task.summary = update.summary
-                    task.category = update.category
-                    task.event_id = event_id
-                digest = DigestOutput.model_validate_json(
-                    await self.provider.generate_digest(update.model_dump_json())
-                )
-                async with self.db.sessions.begin() as session:
                     session.add(Digest(event_id=event_id, summary=digest.summary))
                     event = await session.get(Event, event_id)
                     assert event is not None
                     event.status = "completed"
+                    event.usage = aggregate(attempt_records.get() or [])
                 log("event", "completed")
-        except (ProviderError, ValidationError, SQLAlchemyError, TimeoutError) as exc:
+        except (Exception, asyncio.CancelledError) as exc:
             category = (
                 exc.category
                 if isinstance(exc, ProviderError)
@@ -100,10 +118,17 @@ class Processor:
                 else "deadline"
                 if isinstance(exc, TimeoutError)
                 else "database"
+                if isinstance(exc, SQLAlchemyError)
+                else "cancelled"
+                if isinstance(exc, asyncio.CancelledError)
+                else "internal"
             )
             async with self.db.sessions.begin() as session:
                 event = await session.get(Event, event_id)
                 assert event is not None
                 event.status = "failed"
                 event.error_category = category
+                event.usage = aggregate(attempt_records.get() or [])
             log("event", "failed", error_category=category)
+            if isinstance(exc, asyncio.CancelledError):
+                raise

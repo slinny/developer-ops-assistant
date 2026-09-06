@@ -104,7 +104,14 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             result = await processor.ingest(event_id, kind, payload)
         except SQLAlchemyError:
             raise HTTPException(503, "Database unavailable") from None
-        return JSONResponse(result, status_code=200 if result["status"] == "completed" else 503)
+        return JSONResponse(
+            result,
+            status_code=200
+            if result["status"] == "completed"
+            else 409
+            if result["status"] == "conflict"
+            else 503,
+        )
 
     @app.get("/digests")
     async def digests(
