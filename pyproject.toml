@@ -8,7 +8,11 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "sqlalchemy[asyncio]>=2,<3", "aiosqlite>=0.20,<1", "pydantic-settings>=2,<3", "openai>=2,<3"]
 
+[project.scripts]
+doa-memory = "developer_ops.memory.cli:main"
+
 [project.optional-dependencies]
+memory = ["chromadb>=1.5,<2", "scikit-learn>=1.6,<2", "numpy>=2,<3"]
 dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "httpx>=0.28,<1", "ruff>=0.12,<1", "mypy>=1.15,<2"]
 
 [tool.setuptools.packages.find]
@@ -28,3 +32,7 @@ select = ["E", "F", "I", "UP"]
 python_version = "3.11"
 strict = true
 files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*"]
+ignore_missing_imports = true
