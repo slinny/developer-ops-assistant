@@ -58,3 +58,57 @@ class Queue:
             return {"event_id": event_id, "job_id": job.id,
                     "idempotency_key": job.idempotency_key,
                     "status": job.status, "duplicate": duplicate}
+
+    async def claim(self, lease_seconds: float, max_attempts: int = 5) -> Job | None:
+        from developer_ops.db import JobAttempt
+        now = time.time()
+        async with self.db.transaction() as session:
+            await session.execute(text("BEGIN IMMEDIATE"))
+            expired = (await session.scalars(select(Job).where(
+                Job.status == "running", Job.lease_until <= now))).all()
+            for job in expired:
+                attempt = await session.get(JobAttempt, job.token)
+                if attempt:
+                    attempt.outcome = "lease_expired"
+                    attempt.finished_at = now
+                    attempt.error_category = "worker_lost"
+                job.status = "failed" if job.attempts >= max_attempts else "queued"
+                job.error_category = "worker_lost"
+                job.token = None
+                job.lease_until = None
+                if job.status == "failed":
+                    job.finished_at = now
+            await session.flush()
+            job = await session.scalar(select(Job).where(
+                Job.status == "queued", Job.available_at <= now
+            ).order_by(Job.available_at, Job.id).limit(1))
+            if job is None:
+                return None
+            job.status = "running"
+            job.attempts += 1
+            job.started_at = now
+            job.token = str(uuid4())
+            job.lease_until = now + lease_seconds
+            session.add(JobAttempt(token=job.token, job_id=job.id, started_at=now))
+            await session.flush()
+            return job
+
+    async def owned(self, session: object, job: Job) -> Job:
+        # Caller takes BEGIN IMMEDIATE before reading ownership and applying effects.
+        from sqlalchemy.ext.asyncio import AsyncSession
+        assert isinstance(session, AsyncSession)
+        current = await session.get(Job, job.id)
+        if (current is None or current.status != "running" or current.token != job.token
+                or (current.lease_until or 0) <= time.time()):
+            raise LostLease(job.id)
+        return current
+
+    async def renew(self, job: Job, seconds: float) -> None:
+        async with self.db.transaction() as session:
+            await session.execute(text("BEGIN IMMEDIATE"))
+            current = await self.owned(session, job)
+            current.lease_until = time.time() + seconds
+
+
+class LostLease(Exception):
+    pass

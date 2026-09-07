@@ -28,3 +28,11 @@ class Settings(BaseSettings):
     input_usd_per_million: float | None = Field(default=None, ge=0, allow_inf_nan=False)
     cached_input_usd_per_million: float | None = Field(default=None, ge=0, allow_inf_nan=False)
     output_usd_per_million: float | None = Field(default=None, ge=0, allow_inf_nan=False)
+    worker_concurrency: int = Field(default=4, ge=1, le=32)
+    worker_poll_seconds: float = Field(default=0.25, gt=0, le=30)
+    job_lease_seconds: float = Field(default=30, ge=0.1, le=600)
+    job_max_attempts: int = Field(default=5, ge=1, le=100)
+    job_budget_seconds: float = Field(default=3600, gt=0)
+    memory_path: str = "./memory-index"
+    memory_enabled: bool = False
+    queue_max_pending: int = Field(default=10000, ge=1)
