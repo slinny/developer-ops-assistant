@@ -68,13 +68,14 @@ def client(path: Path) -> Any:
 
 
 def build(documents: list[Document], path: Path, size: int = 256, overlap: int = 26) -> str:
-    if not documents:
-        raise ValueError("Cannot build an empty corpus")
     if len({d.id for d in documents}) != len(documents):
         raise ValueError("Normalize duplicate document IDs before indexing")
     chunks = [chunk for doc in documents for chunk in chunk_document(doc, size, overlap)]
     model = Embeddings()
-    vectors = model.fit([f"{c.title}\n{c.heading}\n{c.text}" for c in chunks])
+    texts = [f"{c.title}\n{c.heading}\n{c.text}" for c in chunks]
+    # Persist a valid model even for an explicitly empty snapshot; no placeholder
+    # document or vector is indexed, and all retrieval paths return no results.
+    vectors = model.fit(texts or ["__empty_index__"])[: len(chunks)]
     generation = "memory-" + uuid4().hex
     path.mkdir(parents=True, exist_ok=True)
     folder = path / generation

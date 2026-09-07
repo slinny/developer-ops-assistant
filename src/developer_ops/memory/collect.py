@@ -13,14 +13,14 @@ def git(root: Path, *args: str) -> str:
     ).strip()
 
 
-def documents(root: Path, repository: str) -> list[dict[str, Any]]:
+def documents(root: Path, repository: str, revision: str = "HEAD") -> list[dict[str, Any]]:
     """Only tracked Markdown; never traverse secrets or generated evaluation files."""
     result = []
-    for name in git(root, "ls-files", "-z", "*.md").split("\0"):
-        if not name or name.startswith(("evaluation/", "docs/phase2")):
+    for name in git(root, "ls-tree", "-r", "--name-only", "-z", revision).split("\0"):
+        if not name.endswith(".md") or name.startswith(("evaluation/", "docs/phase2")):
             continue
         path = root / name
-        if not path.is_file() or path.is_symlink():
+        if path.is_symlink():
             continue
         result.append(
             dict(
@@ -29,9 +29,9 @@ def documents(root: Path, repository: str) -> list[dict[str, Any]]:
                 source_type="doc",
                 title=name,
                 url=str(path.resolve()),
-                text=path.read_text(),
-                updated_at=git(root, "log", "-1", "--format=%cI", "--", name),
-                version=git(root, "log", "-1", "--format=%H", "--", name),
+                text=git(root, "show", f"{revision}:{name}"),
+                updated_at=git(root, "log", "-1", "--format=%cI", revision, "--", name),
+                version=git(root, "log", "-1", "--format=%H", revision, "--", name),
             )
         )
     return result

@@ -178,7 +178,8 @@ def test_instruction_text_is_only_quoted():
     )
     hit = Hit(chunk_document(doc)[0], 1)
     output = answer([hit], "Why atomic writes?")
-    assert output["sources"][0]["excerpt"] == "Atomic writes prevent partial updates."
+    assert output["sources"][0]["excerpt"] in doc.text
+    assert output["mode"] == "extractive"
 
 
 def test_metrics_known_ranking():
@@ -268,3 +269,23 @@ def test_evaluation_labels_and_no_split_leakage():
                 corpus[e["document_id"]].text.split()
             )
     assert all(len(splits) == 1 for splits in groups.values())
+
+
+def test_context_preserves_rationale_across_same_document_chunks():
+    doc = document(
+        text="Streaming decision. "
+        + "background " * 18
+        + "Streaming cannot provide a partial validated task. Keep complete responses."
+    )
+    hits = [Hit(c, 1) for c in chunk_document(doc, 16, 0)]
+    evidence = context(hits, "Why streaming?")
+    assert any("cannot provide a partial" in e.excerpt for e in evidence)
+    assert len(evidence) >= 2
+
+
+def test_empty_snapshot_removes_last_document(tmp_path):
+    build([document()], tmp_path)
+    build([], tmp_path)
+    index = Index(tmp_path)
+    assert index.collection.count() == 0
+    assert search(index, "atomic", "a/b") == []

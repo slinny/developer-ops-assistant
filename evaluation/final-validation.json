@@ -1,0 +1,802 @@
+{
+  "configuration": {
+    "size": 128,
+    "overlap": 0,
+    "k": 10,
+    "mode": "hybrid",
+    "use_reranker": false,
+    "candidates": 20
+  },
+  "manifest": {
+    "generation": "memory-c8de82f4ba984277a994911739285059",
+    "embedding": "lsa-tfidf-v1",
+    "built_at": "2026-09-07T04:23:41.727865+00:00",
+    "size_words": 128,
+    "overlap_words": 0,
+    "documents": 20,
+    "chunks": 48,
+    "dimensions": 48,
+    "corpus_sha256": "0858e960c7e43cc2a03036f5d7b75718be26a236c1d4eb4dd67717110c5a6066"
+  },
+  "python": "3.13.1",
+  "platform": "macOS-26.6.1-arm64-arm-64bit-Mach-O",
+  "queries_sha256": "7ae31d50376aca466594efe06521992c705d7318b45be20b80ce7f4c58714b34",
+  "build_ms": 96.0454170126468,
+  "index_load_ms": 4.094208125025034,
+  "index_bytes": 5468487,
+  "development": {
+    "queries": 24,
+    "answerable": 21,
+    "unanswerable": 3,
+    "k_chunks": 10,
+    "recall": 1.0,
+    "mrr": 0.6404761904761904,
+    "ndcg": 0.7301681547291432,
+    "evidence_recall": 0.8095238095238095,
+    "unanswerable_abstention": 0,
+    "answerable_abstention": 0,
+    "quote_provenance_rate": 1,
+    "retrieval_p50_ms": 1.6713959630578756,
+    "retrieval_p95_ms": 1.8827500753104687,
+    "end_to_end_p50_ms": 2.121520461514592,
+    "end_to_end_p95_ms": 2.376917051151395,
+    "rows": [
+      {
+        "id": "q01",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q02",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q03",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q04",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q05",
+        "ranked": [
+          "developer-ops-assistant:commit:04042652af0862e99f65b452a839784dff22eede",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q06",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:b7f9cac1058f24c7f3f766ab87aa877dc8672a09",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q07",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q08",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:commit:4dacba1ae856432b6b281e04273bb0f487f81dbf"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q09",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q10",
+        "ranked": [
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q11",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q12",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:4dacba1ae856432b6b281e04273bb0f487f81dbf",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q13",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:d10042fd6ca2187c0b61d54f931c0b3c7ac29356",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q14",
+        "ranked": [
+          "developer-ops-assistant:commit:d2cb6b23c5b7f9e9144d42279c2868238bd29548",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:86c679da389c3a0968e8f1fb5f420cc377e58b0c",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7",
+          "developer-ops-assistant:commit:d10042fd6ca2187c0b61d54f931c0b3c7ac29356",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q15",
+        "ranked": [
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q16",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q17",
+        "ranked": [
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q18",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:04042652af0862e99f65b452a839784dff22eede",
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q19",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q20",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.2,
+          "ndcg": 0.38685280723454163
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q21",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q31",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q32",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q33",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      }
+    ]
+  },
+  "held_out": {
+    "queries": 12,
+    "answerable": 9,
+    "unanswerable": 3,
+    "k_chunks": 10,
+    "recall": 1.0,
+    "mrr": 0.7037037037037037,
+    "ndcg": 0.7769203188575826,
+    "evidence_recall": 0.8888888888888888,
+    "unanswerable_abstention": 0.3333333333333333,
+    "answerable_abstention": 0,
+    "quote_provenance_rate": 1,
+    "retrieval_p50_ms": 1.6639380482956767,
+    "retrieval_p95_ms": 1.8714580219238997,
+    "end_to_end_p50_ms": 2.0877704955637455,
+    "end_to_end_p95_ms": 2.356459153816104,
+    "rows": [
+      {
+        "id": "q22",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q23",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q24",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q25",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q26",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q27",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q28",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:commit:98e8aa2186d3e377ee1f9ca4caa4858ee4115d72",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q29",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q30",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q34",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:commit:d369e4425bb44fc9f00fe51ad386b459d50fe7f4",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q35",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q36",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:d2cb6b23c5b7f9e9144d42279c2868238bd29548",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:4dacba1ae856432b6b281e04273bb0f487f81dbf",
+          "developer-ops-assistant:commit:86c679da389c3a0968e8f1fb5f420cc377e58b0c",
+          "developer-ops-assistant:commit:d369e4425bb44fc9f00fe51ad386b459d50fe7f4",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": null,
+        "abstained": true,
+        "quotes_supported": true,
+        "evidence_found": null
+      }
+    ]
+  },
+  "milestone": {
+    "query": "Why did we decide against production streaming?",
+    "answer": "Relevant historical evidence (source excerpts):\n\n[1] Document isolated streaming experiment and retain complete responses\n\n[2] no production streaming path. Revisit for a future user-facing digest\npreview if users can benefit from provisional text. A real-provider A/B test is\nstill needed before making claims about provider latency or streaming overhead.\n\n[3] # Streaming experiment\n\nProduction remains non-streaming. `scripts/streaming_experiment.py` is an isolated\nsimulated transport comparison with no database or provider access. Both paths\nreceive identical JSON in eight-character chunks at two-millisecond intervals.\nThe streaming path observes the first chunk; both paths wait for the complete\nJSON and Pydantic validation before producing useful structured output.\n\nRun `.venv/bin/python scripts/streaming_experiment.py`; the recorded local run is\nin `streaming-results.json`. These are simulated timings, not OpenAI measurements.\nNo credentials were needed or live requests made. Tests verify complete validation\nand rejection of a truncated stream.\n\nStreaming exposes bytes earlier, but this webhook consumer cannot use a partial\ntask/digest. It adds buffering, cancellation and interrupted-stream handling to\nan already complete-response consumer. Structured validation still happens at the\nend. The authenticated digest endpoint reads persisted complete summaries.\n\nDecision:\n\n[4] ## Reliability milestone\n\nThe provider boundary adds cancellable deadlines, bounded retries with backoff and\njitter, process-local capacity/rate limits and per-attempt usage accounting. Task\nupdates and event digests commit atomically after strict validation. JSON logs\ncorrelate requests and delivery IDs. Duplicate deliveries cannot repeat LLM work.\n\n- [Architecture, configuration and failure semantics](docs/reliability.md)\n- [Ingestion baseline](docs/ingestion.md)\n- [Failure-injection results](docs/failure-injection.md)\n- [Streaming decision](docs/streaming.md)\n- [Final local measurements](docs/milestone-results.json)\n\nUse one worker and `--limit-concurrency 32` for the Phase 1 server. This is a local,\ninline processor; queues, crash recovery, replay, RAG and deployment remain future\nphases. All recorded timings use simulated providers, not live OpenAI requests.\n\n[5] ## Commit progression\n\n| Commit | Step |\n| --- | --- |\n| d10042f | Bootstrap signed ingestion, durable events, provider adapter and digests |\n| d2cb6b2 | 1: Trace ingestion and verify durable processing state |\n| 86c679d | 2: Correlated JSON logging |\n| b7f9cac | 3: Cancellable attempt timeouts and processing deadline |\n| 0404265 | 4: Bounded retries, backoff, jitter and Retry-After |\n| a392a08 | 5: Concurrency, bounded waiting and local request rate |\n| 99e07b4 | 6: Per-attempt usage and versioned cost estimates |\n| cbc03e8 | 7: Atomic validation/persistence and database deduplication |\n| b6320cf | 8: Isolated streaming experiment; no production streaming |\n| 635bd4a | 9: Failure-injection and mocked SDK integration tests |\n| d369e44 | 10: Configuration,\n\n[6] ## Definition of done\n\nThe Phase 1 implementation satisfies the milestone under the tested single-process\nfailure model: signed GitHub events produce validated structured task updates and\ndigests, provider resources/waits/retries are bounded, and failure behavior is\nobservable and fail-closed. The recorded tests verify this, including concurrent\nduplicates and rollback after a database write fault.\n\nLive-provider schema/account compatibility, latency, quality and billing remain\nunverified. Limits are process-local; run one worker with server admission control.\nHard process kills can leave received/processing events; automatic replay and\nrecovery are deferred to Phase 3. No exact input-token reservation budget or\nproduction streaming path was justified for this scope. See `reliability.md` for\nall operational limitations. The project is not claimed production-ready.\n\n[7] ## Major files\n\n- `src/developer_ops/app.py`: signed webhook, authenticated digest reads, safe responses.\n- `src/developer_ops/service.py` / `db.py`: durable states, atomic upsert/digest, deduplication.\n- `src/developer_ops/llm.py` / `limits.py`: centralized bounded provider policies.\n- `src/developer_ops/provider.py`: only OpenAI SDK/API integration.\n- `src/developer_ops/usage.py` / `observability.py`: usage/cost and correlated logs.\n- `tests/`: deterministic contract, failure, race, cancellation and accounting tests.\n- `docs/`: architecture, configuration, baseline/final measurements and streaming decision.\n\n[8] ## Verification and remaining limits\n\n- `baseline.json` and `milestone-results.json`: 30 alternating signed issue/PR\n  events, fake provider, temporary file-backed SQLite, no external network.\n- `failure-injection.md`: failure matrix and test evidence.\n- `streaming.md`: simulated experiment; no production streaming consumer.\n- `scripts/measure.py`: reproducible local overhead measurement and trace samples.\n\nNo real model quality, provider latency or actual dollar cost has been measured.\nProvider model/schema support and account configuration need a credentialed smoke\ntest. Tests exercise the SDK against a mock HTTP transport.\n\nInline work can exceed webhook clients' response deadlines. Duplicates are safe,\nbut automatic replay, hard-kill recovery and stale received/processing recovery\nare deferred to Phase 3. There is no operator replay API. Persisted source content\nmay be sensitive: protect the local DB and define retention before deployment.\nDigest reads are",
+    "mode": "extractive",
+    "abstained": false,
+    "sources": [
+      {
+        "citation": 1,
+        "document_id": "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+        "chunk_id": "ff385499f90ecb273539ab7c0b9532c144b2fcb5d94f59d12a5e87576137787f",
+        "title": "Document isolated streaming experiment and retain complete responses",
+        "url": "git:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+        "updated_at": "2026-09-06T01:22:06-04:00",
+        "excerpt": "Document isolated streaming experiment and retain complete responses"
+      },
+      {
+        "citation": 2,
+        "document_id": "developer-ops-assistant:doc:docs/streaming.md",
+        "chunk_id": "6ef32dda351baf36434e0d13880efacb1ded215e044dbb3a13b1c9b9e58f48c0",
+        "title": "docs/streaming.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/docs/streaming.md",
+        "updated_at": "2026-09-06T01:22:06-04:00",
+        "excerpt": "no production streaming path. Revisit for a future user-facing digest\npreview if users can benefit from provisional text. A real-provider A/B test is\nstill needed before making claims about provider latency or streaming overhead."
+      },
+      {
+        "citation": 3,
+        "document_id": "developer-ops-assistant:doc:docs/streaming.md",
+        "chunk_id": "3009fcd22666b95dd7864b7c139c8571a6bba818c8310595460f504ac1223ef9",
+        "title": "docs/streaming.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/docs/streaming.md",
+        "updated_at": "2026-09-06T01:22:06-04:00",
+        "excerpt": "# Streaming experiment\n\nProduction remains non-streaming. `scripts/streaming_experiment.py` is an isolated\nsimulated transport comparison with no database or provider access. Both paths\nreceive identical JSON in eight-character chunks at two-millisecond intervals.\nThe streaming path observes the first chunk; both paths wait for the complete\nJSON and Pydantic validation before producing useful structured output.\n\nRun `.venv/bin/python scripts/streaming_experiment.py`; the recorded local run is\nin `streaming-results.json`. These are simulated timings, not OpenAI measurements.\nNo credentials were needed or live requests made. Tests verify complete validation\nand rejection of a truncated stream.\n\nStreaming exposes bytes earlier, but this webhook consumer cannot use a partial\ntask/digest. It adds buffering, cancellation and interrupted-stream handling to\nan already complete-response consumer. Structured validation still happens at the\nend. The authenticated digest endpoint reads persisted complete summaries.\n\nDecision:"
+      },
+      {
+        "citation": 4,
+        "document_id": "developer-ops-assistant:doc:README.md",
+        "chunk_id": "367ea72935ae90a7bd2da8670669387926410e370e9e5bb08bec57c382d0d8cc",
+        "title": "README.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/README.md",
+        "updated_at": "2026-09-06T01:26:15-04:00",
+        "excerpt": "## Reliability milestone\n\nThe provider boundary adds cancellable deadlines, bounded retries with backoff and\njitter, process-local capacity/rate limits and per-attempt usage accounting. Task\nupdates and event digests commit atomically after strict validation. JSON logs\ncorrelate requests and delivery IDs. Duplicate deliveries cannot repeat LLM work.\n\n- [Architecture, configuration and failure semantics](docs/reliability.md)\n- [Ingestion baseline](docs/ingestion.md)\n- [Failure-injection results](docs/failure-injection.md)\n- [Streaming decision](docs/streaming.md)\n- [Final local measurements](docs/milestone-results.json)\n\nUse one worker and `--limit-concurrency 32` for the Phase 1 server. This is a local,\ninline processor; queues, crash recovery, replay, RAG and deployment remain future\nphases. All recorded timings use simulated providers, not live OpenAI requests."
+      },
+      {
+        "citation": 5,
+        "document_id": "developer-ops-assistant:doc:docs/execution-report.md",
+        "chunk_id": "5fb4df0697c063209c3dc8b3a81d2dc7e8005bff8dd6cfa4758e2f367e50044f",
+        "title": "docs/execution-report.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/docs/execution-report.md",
+        "updated_at": "2026-09-06T01:30:26-04:00",
+        "excerpt": "## Commit progression\n\n| Commit | Step |\n| --- | --- |\n| d10042f | Bootstrap signed ingestion, durable events, provider adapter and digests |\n| d2cb6b2 | 1: Trace ingestion and verify durable processing state |\n| 86c679d | 2: Correlated JSON logging |\n| b7f9cac | 3: Cancellable attempt timeouts and processing deadline |\n| 0404265 | 4: Bounded retries, backoff, jitter and Retry-After |\n| a392a08 | 5: Concurrency, bounded waiting and local request rate |\n| 99e07b4 | 6: Per-attempt usage and versioned cost estimates |\n| cbc03e8 | 7: Atomic validation/persistence and database deduplication |\n| b6320cf | 8: Isolated streaming experiment; no production streaming |\n| 635bd4a | 9: Failure-injection and mocked SDK integration tests |\n| d369e44 | 10: Configuration,"
+      },
+      {
+        "citation": 6,
+        "document_id": "developer-ops-assistant:doc:docs/execution-report.md",
+        "chunk_id": "fd9a492f7dd8e50c70bfcb3d418e6e5433739b5230fc6d231b73c2b02e73ecca",
+        "title": "docs/execution-report.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/docs/execution-report.md",
+        "updated_at": "2026-09-06T01:30:26-04:00",
+        "excerpt": "## Definition of done\n\nThe Phase 1 implementation satisfies the milestone under the tested single-process\nfailure model: signed GitHub events produce validated structured task updates and\ndigests, provider resources/waits/retries are bounded, and failure behavior is\nobservable and fail-closed. The recorded tests verify this, including concurrent\nduplicates and rollback after a database write fault.\n\nLive-provider schema/account compatibility, latency, quality and billing remain\nunverified. Limits are process-local; run one worker with server admission control.\nHard process kills can leave received/processing events; automatic replay and\nrecovery are deferred to Phase 3. No exact input-token reservation budget or\nproduction streaming path was justified for this scope. See `reliability.md` for\nall operational limitations. The project is not claimed production-ready."
+      },
+      {
+        "citation": 7,
+        "document_id": "developer-ops-assistant:doc:docs/execution-report.md",
+        "chunk_id": "037e0630a2bd42a9f076c85cfba4f1a43e588fd58068ecdfccfcf0f929dbef88",
+        "title": "docs/execution-report.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/docs/execution-report.md",
+        "updated_at": "2026-09-06T01:30:26-04:00",
+        "excerpt": "## Major files\n\n- `src/developer_ops/app.py`: signed webhook, authenticated digest reads, safe responses.\n- `src/developer_ops/service.py` / `db.py`: durable states, atomic upsert/digest, deduplication.\n- `src/developer_ops/llm.py` / `limits.py`: centralized bounded provider policies.\n- `src/developer_ops/provider.py`: only OpenAI SDK/API integration.\n- `src/developer_ops/usage.py` / `observability.py`: usage/cost and correlated logs.\n- `tests/`: deterministic contract, failure, race, cancellation and accounting tests.\n- `docs/`: architecture, configuration, baseline/final measurements and streaming decision."
+      },
+      {
+        "citation": 8,
+        "document_id": "developer-ops-assistant:doc:docs/reliability.md",
+        "chunk_id": "cdbd21ed1d3757bfbf74f417054a517e0153a22873a63f29475d88a848fe64ce",
+        "title": "docs/reliability.md",
+        "url": "/Users/siranli/Developer/developer-ops-assistant/docs/reliability.md",
+        "updated_at": "2026-09-06T01:30:26-04:00",
+        "excerpt": "## Verification and remaining limits\n\n- `baseline.json` and `milestone-results.json`: 30 alternating signed issue/PR\n  events, fake provider, temporary file-backed SQLite, no external network.\n- `failure-injection.md`: failure matrix and test evidence.\n- `streaming.md`: simulated experiment; no production streaming consumer.\n- `scripts/measure.py`: reproducible local overhead measurement and trace samples.\n\nNo real model quality, provider latency or actual dollar cost has been measured.\nProvider model/schema support and account configuration need a credentialed smoke\ntest. Tests exercise the SDK against a mock HTTP transport.\n\nInline work can exceed webhook clients' response deadlines. Duplicates are safe,\nbut automatic replay, hard-kill recovery and stale received/processing recovery\nare deferred to Phase 3. There is no operator replay API. Persisted source content\nmay be sensitive: protect the local DB and define retention before deployment.\nDigest reads are"
+      }
+    ]
+  },
+  "limits": [
+    "Agent-authored labels need maintainer adjudication.",
+    "Extractive quotations do not establish semantic answer correctness.",
+    "No live GitHub or OpenAI calls; provider tests use mock HTTP transport.",
+    "Index bytes include retained inactive local generations."
+  ]
+}

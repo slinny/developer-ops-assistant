@@ -29,20 +29,18 @@ def context(hits: list[Hit], query: str, max_words: int = 1200) -> list[Evidence
     query_terms = terms(query)
     if not query_terms:
         return []
-    result = []
+    result: list[Evidence] = []
     seen: set[str] = set()
     remaining = max_words
     for hit in hits:
         chunk = hit.chunk
-        if chunk.document_id in seen:
+        if chunk.id in seen or any(chunk.text in e.excerpt for e in result):
             continue
-        passages = [p.strip() for p in re.split(r"\n\s*\n|(?<=[.!?])\s+", chunk.text)]
-        # Choose a sentence or paragraph that shares content terms with the query.
-        # This is a conservative lexical evidence gate, not a factual confidence score.
-        passages = [p for p in passages if terms(p) & query_terms]
-        if not passages:
+        if not terms(chunk.text) & query_terms:
             continue
-        passage = max(passages, key=lambda p: len(terms(p) & query_terms))
+        # Preserve surrounding rationale and negation. Selecting only the most
+        # query-like sentence can keep a decision but discard its explanation.
+        passage = chunk.text
         words = list(re.finditer(r"\S+", passage))
         if len(words) > remaining:
             passage = passage[: words[remaining - 1].end()]
@@ -56,7 +54,7 @@ def context(hits: list[Hit], query: str, max_words: int = 1200) -> list[Evidence
                 excerpt=passage,
             )
         )
-        seen.add(chunk.document_id)
+        seen.add(chunk.id)
         remaining -= len(passage.split())
         if remaining <= 0:
             break

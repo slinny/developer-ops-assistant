@@ -66,7 +66,7 @@ def main() -> None:
         temporary.replace(args.output)
         print(json.dumps({"items": len(snapshot["items"]), "output": str(args.output)}))
     elif args.command == "collect":
-        records = documents(args.root, args.repository) + history(
+        records = documents(args.root, args.repository, args.revision) + history(
             args.root, args.repository, args.revision
         )
         if args.github_export:
