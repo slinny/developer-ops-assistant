@@ -61,3 +61,12 @@ Install `.venv/bin/pip install -e '.[memory,dev]'`, then follow the
 records 36 labeled queries, 54 retrieval configurations, held-out results and
 known answer-quality limits. Live GitHub ingestion and generated-answer quality
 remain unverified; the benchmark uses actual local Phase 1 history.
+
+## Developer agent
+
+Phase 4 adds a handwritten, bounded investigation loop across project knowledge,
+GitHub PRs and the task database, plus durable investigation jobs and explicit,
+idempotent local task creation. Follow the [agent operating guide](docs/phase4-agent.md)
+for repository allowlists, index configuration, authenticated APIs, budgets and evals.
+The caching milestone passes with real local retrieval/DB and mocked GitHub/model
+responses; live model quality and live GitHub access remain unverified.
