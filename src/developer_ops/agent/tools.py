@@ -47,7 +47,7 @@ class Tools:
         finally:
             if process.returncode is None:
                 process.kill()
-                await process.wait()
+                await process.communicate()
 
     async def query_tasks(self, args: TaskArgs) -> ToolResult:
         statement = select(Task).where(Task.repository == self.repository)
@@ -104,6 +104,12 @@ class Tools:
         pr, _ = await self._get(f"pulls/{number}")
         if not isinstance(pr, dict) or pr.get("number") != number:
             raise ValueError("Invalid GitHub PR response")
+        if (
+            any(not isinstance(pr.get(k), str) for k in ("title", "state", "updated_at"))
+            or pr.get("state") not in {"open", "closed"}
+            or (pr.get("body") is not None and not isinstance(pr["body"], str))
+        ):
+            raise ValueError("Invalid GitHub PR fields")
         url = f"https://github.com/{self.repository}/pull/{number}"
         evidence = [
             Evidence(
@@ -119,6 +125,7 @@ class Tools:
         for endpoint, label in [
             (f"issues/{number}/comments", "comment"),
             (f"pulls/{number}/reviews", "review"),
+            (f"pulls/{number}/comments", "inline-comment"),
             (f"pulls/{number}/files", "file"),
         ]:
             rows, has_next = await self._get(endpoint, args.page)
@@ -126,6 +133,18 @@ class Tools:
                 raise ValueError("Invalid GitHub page")
             more |= has_next
             for row in rows:
+                if not isinstance(row, dict):
+                    raise ValueError("Invalid GitHub item")
+                if label == "file":
+                    if not isinstance(row.get("filename"), str):
+                        raise ValueError("Invalid GitHub filename")
+                elif type(row.get("id")) is not int:
+                    raise ValueError("Invalid GitHub item id")
+                if any(
+                    row.get(k) is not None and not isinstance(row[k], str)
+                    for k in ("body", "patch")
+                ):
+                    raise ValueError("Invalid GitHub item body")
                 identity = row["filename"] if label == "file" else str(row["id"])
                 evidence.append(
                     Evidence(

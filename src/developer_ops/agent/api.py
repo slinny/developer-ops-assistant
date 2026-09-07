@@ -17,7 +17,12 @@ def render(state: State) -> dict[str, object]:
     return {
         "status": state.status,
         "answer": "\n\n".join(f"{c.statement} [{c.evidence_id}]" for c in state.claims),
-        "limitation": state.limitation,
+        "limitation": state.limitation
+        or (
+            f"Investigation stopped: {state.status}. Evidence may be incomplete."
+            if state.status not in {"running", "succeeded"}
+            else ""
+        ),
         "claims": [c.model_dump() for c in state.claims],
         "sources": [e.model_dump() for e in state.evidence.values()],
         "steps": state.steps,
@@ -84,11 +89,14 @@ def router(db: Database, config: Settings, model: Model | None = None) -> APIRou
     @api.get("/investigations/{job_id}")
     async def status(job_id: str) -> dict[str, object]:
         job = await scoped_job(job_id)
+        state = State.model_validate(job.checkpoints["agent"])
+        if job.status in {"failed", "cancelled"} and state.status == "running":
+            state.status = job.status
         return {
             "job_id": job.id,
             "job_status": job.status,
             "error": job.error_category,
-            **render(State.model_validate(job.checkpoints["agent"])),
+            **render(state),
         }
 
     @api.delete("/investigations/{job_id}")

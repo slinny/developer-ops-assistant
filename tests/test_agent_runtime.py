@@ -141,3 +141,58 @@ async def test_reservations_survive_interruption():
     result = await Agent(Scripted([decision(query="cache")]), ReadTool()).run(restored)
     assert result.deadline == deadline
     assert result.reserved_tokens > State.model_validate_json(snapshots[-1]).reserved_tokens
+
+
+async def test_failed_calls_are_not_repeated():
+    class Broken(ReadTool):
+        async def execute(self, name, args):
+            self.calls += 1
+            raise ValueError("unavailable")
+
+    tools = Broken()
+    result = await Agent(Scripted([decision(query="cache"), decision(query="cache")]), tools).run(
+        state()
+    )
+    assert result.status == "duplicate_call" and tools.calls == 1
+    assert result.history[0]["error"] == "ValueError"
+
+
+async def test_expired_deadline_never_dispatches():
+    import time
+
+    initial = state()
+    initial.deadline = time.time() - 1
+    model = Scripted([])
+    result = await Agent(model, ReadTool()).run(initial)
+    assert result.status == "timeout" and model.calls == 0
+
+
+async def test_tool_timeout_and_bad_result_are_recorded():
+    import asyncio
+
+    class Slow:
+        async def execute(self, name, args):
+            await asyncio.sleep(5)
+
+    class Invalid:
+        async def execute(self, name, args):
+            class Result:
+                def model_dump(self):
+                    return {"evidence": "invalid"}
+
+            return Result()
+
+    for tools, expected in [(Slow(), "TimeoutError"), (Invalid(), "ValidationError")]:
+        result = await Agent(Scripted([decision(query="cache")]), tools).run(
+            state(max_steps=1, tool_timeout_seconds=0.01)
+        )
+        assert result.status == "max_steps" and result.history[0]["error"] == expected
+        assert not result.evidence
+
+
+async def test_invalid_arguments_do_not_dispatch():
+    tools = ReadTool()
+    result = await Agent(Scripted([decision(query="cache", limit="5")]), tools).run(
+        state(max_steps=1)
+    )
+    assert tools.calls == 0 and result.history[0]["error"] == "ValidationError"

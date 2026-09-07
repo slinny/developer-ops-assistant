@@ -142,7 +142,8 @@ async def process(worker: "Worker", job: Job) -> None:
                 await investigation_job(worker, job)
             else:
                 raise ValueError("Unknown job kind")
-            log("job", "succeeded")
+            if job.kind != "investigate":
+                log("job", "succeeded")
     except LostLease:
         raise
     except Exception as exc:

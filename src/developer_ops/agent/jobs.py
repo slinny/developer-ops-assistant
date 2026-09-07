@@ -33,7 +33,7 @@ async def agent_context(
     if config.github_token:
         headers["Authorization"] = "Bearer " + config.github_token.get_secret_value()
     async with httpx.AsyncClient(headers=headers) as github:
-        tools = Tools(db, repository, Path(config.memory_path), github)
+        tools = Tools(db, repository, Path(config.agent_memory_path), github)
         if model is not None:
             yield Agent(model, tools, config.agent_usd_per_million_upper_bound)
         else:
@@ -97,6 +97,13 @@ async def investigation_job(worker: "Worker", job: Job) -> None:
         attempt.outcome = current.status
         attempt.finished_at = current.finished_at
         attempt.error_category = current.error_category
+        event = await session.get(Event, job.event_id)
+        assert event is not None
+        event.status = current.status
+        event.error_category = current.error_category
+    from developer_ops.observability import log
+
+    log("job", current.status, error_category=current.error_category)
 
 
 async def cancel(db: Database, job_id: str) -> bool:

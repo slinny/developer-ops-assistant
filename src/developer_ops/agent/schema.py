@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field
 
 
 class Strict(BaseModel):
@@ -9,7 +9,17 @@ class Strict(BaseModel):
     )
 
 
-Repository = Annotated[str, Field(pattern=r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")]
+def safe_repository(value: str) -> str:
+    if any(part in {".", ".."} for part in value.split("/")):
+        raise ValueError("Repository cannot contain path traversal segments")
+    return value
+
+
+Repository = Annotated[
+    str,
+    Field(pattern=r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", max_length=255),
+    AfterValidator(safe_repository),
+]
 
 
 class SearchArgs(Strict):
@@ -82,12 +92,13 @@ class State(Strict):
     request: InvestigationRequest
     steps: int = 0
     reserved_tokens: int = 0
-    reserved_cost_usd: float = 0
+    reserved_cost_usd: float | None = None
     actual_tokens: int = 0
     deadline: float = 0
     status: str = "running"
     history: list[dict[str, object]] = Field(default_factory=list)
     evidence: dict[str, Evidence] = Field(default_factory=dict)
+    attempted_calls: list[str] = Field(default_factory=list)
     calls: dict[str, ToolResult] = Field(default_factory=dict)
     claims: list[Claim] = Field(default_factory=list)
     limitation: str = ""
