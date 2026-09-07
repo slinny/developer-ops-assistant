@@ -13,6 +13,7 @@ from pydantic import ValidationError
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
+from developer_ops.agent.runtime import Model
 from developer_ops.config import Settings
 from developer_ops.db import Database, Digest, Job
 from developer_ops.observability import configure_logging, log, request_id
@@ -22,7 +23,11 @@ from developer_ops.queue import Queue, QueueFull
 from developer_ops.schemas import WebhookPayload
 
 
-def create_app(settings: Settings | None = None, provider: LLMProvider | None = None) -> FastAPI:
+def create_app(
+    settings: Settings | None = None,
+    provider: LLMProvider | None = None,
+    agent_model: Model | None = None,
+) -> FastAPI:
     config = settings or Settings()  # type: ignore[call-arg]
     db = Database(config.database_url)
     queue = Queue(db, config.queue_max_pending)
@@ -177,4 +182,7 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             rows = (await session.scalars(select(Digest).limit(100))).all()
             return [{"event_id": row.event_id, "summary": row.summary} for row in rows]
 
+    from developer_ops.agent.api import router
+
+    app.include_router(router(db, config, agent_model))
     return app
