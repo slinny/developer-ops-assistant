@@ -82,15 +82,41 @@ class Agent:
         return state
 
     async def step(self, state: State, save: Callable[[State], Awaitable[None]]) -> None:
-        state.steps += 1
-        await save(state)
         prompt = prompt_for(state)
+        limits = state.request.limits
+        # ASCII JSON bytes bound ordinary byte-BPE input tokens conservatively.
+        # Include schema, instructions and generous protocol framing overhead.
+        reservation = (
+            len(prompt.encode())
+            + len(INSTRUCTIONS.encode())
+            + len(json.dumps(Decision.model_json_schema()).encode())
+            + 4096
+            + limits.output_tokens
+        )
+        if state.reserved_tokens + reservation > limits.max_tokens:
+            state.status = "token_limit"
+            return
+        if limits.max_cost_usd is not None and self.rate is None:
+            state.status = "pricing_unavailable"
+            return
+        cost = reservation * self.rate / 1_000_000 if self.rate is not None else 0
+        if limits.max_cost_usd is not None and state.reserved_cost_usd + cost > limits.max_cost_usd:
+            state.status = "cost_limit"
+            return
+        state.steps += 1
+        state.reserved_tokens += reservation
+        state.reserved_cost_usd += cost
+        # Persist before dispatch; interrupted calls retain their full reservation.
+        await save(state)
         try:
             decision, used = await self.model.decide(prompt, state.request.limits.output_tokens)
             decision = Decision.model_validate(decision.model_dump())
             if type(used) is not int or used < 0:
                 raise ValueError("Invalid usage")
             state.actual_tokens += used
+            if used > reservation:
+                state.status = "usage_bound_exceeded"
+                return
         except Exception:
             state.status = "model_error"
             return

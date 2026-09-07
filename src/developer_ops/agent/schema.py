@@ -93,7 +93,7 @@ class State(Strict):
     limitation: str = ""
 
 
-CONTRACTS = {
+CONTRACTS: dict[str, type[Strict]] = {
     "search_project_knowledge": SearchArgs,
     "query_tasks": TaskArgs,
     "get_pull_request": PRArgs,
