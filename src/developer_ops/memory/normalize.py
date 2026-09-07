@@ -4,6 +4,7 @@ import hashlib
 import html
 import re
 import unicodedata
+from datetime import UTC, datetime
 from typing import Any
 
 NORMALIZATION_VERSION = "clean-v1"
@@ -29,9 +30,18 @@ def normalize(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
         row["content_hash"] = hashlib.sha256(row["text"].encode()).hexdigest()
         row["normalization_version"] = NORMALIZATION_VERSION
         old = latest.get(row["id"])
-        if old and old.get("updated_at", "") > row.get("updated_at", ""):
+
+        def instant(value: str) -> datetime:
+            if not value:
+                return datetime.min.replace(tzinfo=UTC)
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                raise ValueError("Timestamps require timezone")
+            return parsed.astimezone(UTC)
+
+        if old and instant(old.get("updated_at", "")) > instant(row.get("updated_at", "")):
             continue
-        if old and old.get("updated_at", "") == row.get("updated_at", ""):
+        if old and instant(old.get("updated_at", "")) == instant(row.get("updated_at", "")):
             if old["content_hash"] != row["content_hash"]:
                 raise ValueError(f"Conflicting versions at same timestamp: {row['id']}")
         latest[row["id"]] = row

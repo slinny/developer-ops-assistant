@@ -32,7 +32,7 @@ class Embeddings:
         matrix = self.vectorizer.fit_transform(texts)
         dimensions = min(128, matrix.shape[0], matrix.shape[1])
         if min(matrix.shape) < 2:
-            self.components = np.eye(matrix.shape[1])
+            self.components = unit_vectors(np.asarray(matrix.sum(axis=0)))
         else:
             svd = TruncatedSVD(n_components=dimensions, random_state=42)
             svd.fit(matrix)

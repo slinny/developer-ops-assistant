@@ -69,13 +69,15 @@ def github_export(path: Path, repository: str) -> list[dict[str, Any]]:
     export = json.loads(path.read_text())
     if export.get("complete") is not True:
         raise ValueError("GitHub export must attest complete=true (including comment pagination)")
+    if export.get("repository", repository) != repository:
+        raise ValueError("Export repository does not match requested repository")
     result = []
     for item in export["items"]:
         kind = item["source_type"]
         if kind not in {"issue", "pr", "discussion"}:
             raise ValueError("Unsupported GitHub source type")
         identity = f"{repository}:{kind}:{item['number']}"
-        url = item.get("url") or item["html_url"]
+        url = item.get("html_url") or item["url"]
         base = dict(
             repository=repository,
             source_type=kind,
@@ -91,7 +93,7 @@ def github_export(path: Path, repository: str) -> list[dict[str, Any]]:
         # Each comment retains its own anchor and parent; replies may be flattened
         # by the exporter, with their parent_id retained in related_ids.
         for comment in item.get("comments", []) + item.get("reviews", []):
-            anchor = comment.get("url") or comment.get("html_url")
+            anchor = comment.get("html_url") or comment.get("url")
             if not anchor:
                 raise ValueError("Every comment/review requires a source URL")
             result.append(
@@ -99,6 +101,7 @@ def github_export(path: Path, repository: str) -> list[dict[str, Any]]:
                     base,
                     id=f"{identity}:comment:{comment['id']}",
                     parent_id=identity,
+                    related_ids=comment.get("related_ids", []),
                     url=anchor,
                     text=comment.get("body") or "",
                     author=(comment.get("author") or comment.get("user") or {}).get("login", ""),
@@ -126,7 +129,8 @@ def digests(path: Path, repository: str) -> list[dict[str, Any]]:
         if repo != repository:
             continue
         item = payload.get("issue") or payload.get("pull_request")
-        url = item.get("html_url") or f"https://github.com/{repo}/issues/{item['number']}"
+        kind = "issues" if payload.get("issue") else "pull"
+        url = item.get("html_url") or f"https://github.com/{repo}/{kind}/{item['number']}"
         result.append(
             dict(
                 id=f"{repository}:digest:{event_id}",
