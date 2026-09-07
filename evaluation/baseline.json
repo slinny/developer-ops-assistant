@@ -1,0 +1,431 @@
+{
+  "configuration": {
+    "size": 256,
+    "overlap": 26,
+    "k": 5,
+    "mode": "vector"
+  },
+  "manifest": {
+    "generation": "memory-de675e5cc41b411f83ee98a7b2cd0bdc",
+    "embedding": "lsa-tfidf-v1",
+    "built_at": "2026-09-07T04:12:09.220619+00:00",
+    "size_words": 256,
+    "overlap_words": 26,
+    "documents": 20,
+    "chunks": 37,
+    "dimensions": 37,
+    "corpus_sha256": "0858e960c7e43cc2a03036f5d7b75718be26a236c1d4eb4dd67717110c5a6066"
+  },
+  "development": {
+    "queries": 24,
+    "answerable": 21,
+    "unanswerable": 3,
+    "k_chunks": 5,
+    "recall": 0.9047619047619048,
+    "mrr": 0.5396825396825397,
+    "ndcg": 0.6322791138641423,
+    "evidence_recall": 0.7619047619047619,
+    "unanswerable_abstention": 0,
+    "answerable_abstention": 0,
+    "quote_provenance_rate": 1,
+    "retrieval_p50_ms": 0.6923124892637134,
+    "retrieval_p95_ms": 0.940792029723525,
+    "end_to_end_p50_ms": 1.0028744582086802,
+    "end_to_end_p95_ms": 1.4181251171976328,
+    "rows": [
+      {
+        "id": "q01",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q02",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q03",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q04",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q05",
+        "ranked": [
+          "developer-ops-assistant:commit:04042652af0862e99f65b452a839784dff22eede",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q06",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q07",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q08",
+        "ranked": [
+          "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q09",
+        "ranked": [
+          "developer-ops-assistant:commit:b6320cf587ccf85eeebc0e5b8ded82d4ad01b4a6",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q10",
+        "ranked": [
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q11",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q12",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:4dacba1ae856432b6b281e04273bb0f487f81dbf"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q13",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:d10042fd6ca2187c0b61d54f931c0b3c7ac29356"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q14",
+        "ranked": [
+          "developer-ops-assistant:commit:d2cb6b23c5b7f9e9144d42279c2868238bd29548",
+          "developer-ops-assistant:commit:86c679da389c3a0968e8f1fb5f420cc377e58b0c",
+          "developer-ops-assistant:commit:d10042fd6ca2187c0b61d54f931c0b3c7ac29356",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q15",
+        "ranked": [
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q16",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q17",
+        "ranked": [
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q18",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:04042652af0862e99f65b452a839784dff22eede",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q19",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 0.0,
+          "mrr": 0,
+          "ndcg": 0.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q20",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": {
+          "recall": 0.0,
+          "mrr": 0,
+          "ndcg": 0.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q21",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q31",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q32",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q33",
+        "ranked": [
+          "developer-ops-assistant:commit:d369e4425bb44fc9f00fe51ad386b459d50fe7f4",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      }
+    ]
+  }
+}
