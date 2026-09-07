@@ -38,6 +38,7 @@ def client(tmp_path, provider):
         database_url=f"sqlite+aiosqlite:///{tmp_path}/test.db",
         retry_base_seconds=0,
         job_max_attempts=3,
+        memory_enabled=False,
         _env_file=None,
     )
     with TestClient(create_app(settings, provider)) as client:

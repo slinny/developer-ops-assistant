@@ -145,8 +145,19 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             job = await session.get(Job, job_id)
             if job is None:
                 raise HTTPException(404, "Job not found")
+            downstream = (
+                await session.scalars(
+                    select(Job).where(
+                        Job.event_id == job.event_id, Job.kind == "memory", Job.id != job.id
+                    )
+                )
+            ).all()
             return {
                 "job_id": job.id,
+                "kind": job.kind,
+                "downstream_jobs": [
+                    {"job_id": child.id, "status": child.status} for child in downstream
+                ],
                 "status": job.status,
                 "attempts": job.attempts,
                 "error_category": job.error_category,

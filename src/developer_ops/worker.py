@@ -1,7 +1,9 @@
 """Run one worker process per database; concurrency shares provider capacity."""
 
 import asyncio
+import fcntl
 import signal
+from pathlib import Path
 
 from developer_ops.config import Settings
 from developer_ops.db import Database, Job
@@ -28,7 +30,11 @@ class Worker:
         await process(self, job)
 
     async def run_once(self) -> bool:
-        job = await self.queue.claim(self.config.job_lease_seconds, self.config.job_max_attempts)
+        job = await self.queue.claim(
+            self.config.job_lease_seconds,
+            self.config.job_max_attempts,
+            self.config.job_budget_seconds,
+        )
         if job is None:
             return False
         heartbeat = asyncio.create_task(self.heartbeat(job))
@@ -63,11 +69,27 @@ class Worker:
                 pass
 
     async def run(self) -> None:
-        await self.queue.migrate()
-        await asyncio.gather(*(self.loop() for _ in range(self.config.worker_concurrency)))
+        database_path = self.db.engine.url.database
+        if not database_path or database_path == ":memory:":
+            raise ValueError("Workers require a persistent SQLite database")
+        lock_path = Path(database_path).resolve().with_suffix(".worker.lock")
+        with lock_path.open("a") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise RuntimeError("One worker process per database is supported") from None
+            if self.config.memory_enabled:
+                from developer_ops.memory.index import Embeddings
+
+                _ = Embeddings  # Fail startup clearly if memory dependencies are missing.
+            await self.queue.migrate()
+            await asyncio.gather(*(self.loop() for _ in range(self.config.worker_concurrency)))
 
 
 async def main_async() -> None:
+    from developer_ops.observability import configure_logging
+
+    configure_logging()
     config = Settings()  # type: ignore[call-arg]
     if not config.openai_api_key:
         raise ValueError("DOA_OPENAI_API_KEY is required for workers")
@@ -86,3 +108,7 @@ async def main_async() -> None:
 
 def main() -> None:
     asyncio.run(main_async())
+
+
+if __name__ == "__main__":
+    main()

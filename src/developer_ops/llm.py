@@ -75,6 +75,8 @@ class LLMBoundary:
             log("llm.usage", outcome, **{k: v for k, v in record.items() if k != "outcome"})
 
     async def _call(self, operation: str, call: Callable[[], Awaitable[LLMResponse]]) -> str:
+        if self.config.max_attempts == 1:
+            return await self._attempt(operation, call, 1)
         try:
             async with asyncio.timeout(self.config.retry_budget_seconds):
                 for attempt in range(1, self.config.max_attempts + 1):

@@ -106,7 +106,7 @@ def test_commit_acknowledgment_failure_preserves_completed(client):
 
     def fail_after_commit(session):
         commits.append(True)
-        if len(commits) == 5:  # receipt, processing, then atomic completion
+        if len(commits) == 6:  # receipt, claim, fingerprint, two checkpoints, completion
             raise OperationalError("ack lost", None, Exception("commit was durable"))
 
     event.listen(Session, "after_commit", fail_after_commit)

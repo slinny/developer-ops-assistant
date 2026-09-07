@@ -1,11 +1,12 @@
 """Resumable event processing with fenced, atomic business effects."""
 
 import asyncio
+import hashlib
 import time
 from datetime import UTC
 from typing import TYPE_CHECKING
 
-from sqlalchemy import text
+from sqlalchemy import select, text
 from sqlalchemy.dialects.sqlite import insert
 
 from developer_ops.db import Digest, Event, Job, JobAttempt, Task
@@ -24,6 +25,9 @@ async def checkpoint(worker: "Worker", job: Job, name: str, value: str) -> None:
         current = await worker.queue.owned(session, job)
         current.checkpoints = {**current.checkpoints, name: value}
         job.checkpoints = dict(current.checkpoints)
+        attempt = await session.get(JobAttempt, job.token)
+        assert attempt is not None
+        attempt.usage = list(attempt_records.get() or [])
 
 
 async def event_job(worker: "Worker", job: Job) -> None:
@@ -35,6 +39,15 @@ async def event_job(worker: "Worker", job: Job) -> None:
     item = payload.issue if kind == "issues" else payload.pull_request
     assert item is not None
     context = task_context(payload.repository.full_name, kind, item.model_dump(mode="json"))
+    fingerprint = hashlib.sha256(
+        (context + worker.boundary.model + f":processor:{job.version}").encode()
+    ).hexdigest()
+    if job.checkpoints.get("fingerprint") != fingerprint:
+        async with worker.db.transaction() as session:
+            await session.execute(text("BEGIN IMMEDIATE"))
+            current = await worker.queue.owned(session, job)
+            current.checkpoints = {"fingerprint": fingerprint}
+            job.checkpoints = dict(current.checkpoints)
     raw = job.checkpoints.get("extract")
     if raw is None:
         raw = await worker.boundary.extract_task_update(context)
@@ -83,7 +96,15 @@ async def event_job(worker: "Worker", job: Job) -> None:
         assert event is not None
         event.status = "completed"
         event.error_category = None
-        event.usage = aggregate(attempt_records.get() or [])
+        prior = (
+            await session.scalars(
+                select(JobAttempt).where(JobAttempt.job_id == job.id, JobAttempt.token != job.token)
+            )
+        ).all()
+        event.usage = aggregate(
+            [record for attempt in prior for record in attempt.usage]
+            + list(attempt_records.get() or [])
+        )
         if worker.config.memory_enabled:
             session.add(worker.queue.new_job(job.event_id, "memory"))
         current.status = "succeeded"
@@ -109,10 +130,13 @@ async def process(worker: "Worker", job: Job) -> None:
         async with asyncio.timeout(worker.config.processing_deadline_seconds):
             if job.kind == "event":
                 await event_job(worker, job)
-            else:
+            elif job.kind == "memory":
                 from developer_ops.memory.jobs import memory_job
 
                 await memory_job(worker, job)
+            else:
+                raise ValueError("Unknown job kind")
+            log("job", "succeeded")
     except LostLease:
         raise
     except Exception as exc:

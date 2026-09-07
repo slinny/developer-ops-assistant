@@ -2,7 +2,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
 
-from sqlalchemy import JSON, ForeignKey, String, UniqueConstraint, event
+from sqlalchemy import JSON, ForeignKey, String, UniqueConstraint, event, text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -64,6 +64,7 @@ class Database:
 
     async def initialize(self) -> None:
         async with self.engine.begin() as conn:
+            await conn.execute(text("BEGIN IMMEDIATE"))
             await conn.run_sync(Base.metadata.create_all)
 
     async def close(self) -> None:
@@ -104,3 +105,12 @@ class JobAttempt(Base):
 class SchemaVersion(Base):
     __tablename__ = "schema_versions"
     version: Mapped[int] = mapped_column(primary_key=True)
+
+
+class JobReplay(Base):
+    __tablename__ = "job_replays"
+    id: Mapped[str] = mapped_column(primary_key=True)
+    job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id"), index=True)
+    requested_at: Mapped[float]
+    previous_error: Mapped[str | None]
+    previous_attempts: Mapped[int]

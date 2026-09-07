@@ -82,7 +82,9 @@ class Queue:
                 "duplicate": duplicate,
             }
 
-    async def claim(self, lease_seconds: float, max_attempts: int = 5) -> Job | None:
+    async def claim(
+        self, lease_seconds: float, max_attempts: int = 5, budget_seconds: float = 3600
+    ) -> Job | None:
         from developer_ops.db import JobAttempt
 
         now = time.time()
@@ -99,12 +101,42 @@ class Queue:
                     attempt.outcome = "lease_expired"
                     attempt.finished_at = now
                     attempt.error_category = "worker_lost"
-                job.status = "failed" if job.attempts >= max_attempts else "queued"
+                job.status = (
+                    "failed"
+                    if (
+                        job.attempts >= max_attempts
+                        or now >= (job.started_at or now) + budget_seconds
+                    )
+                    else "queued"
+                )
                 job.error_category = "worker_lost"
                 job.token = None
                 job.lease_until = None
                 if job.status == "failed":
                     job.finished_at = now
+                if job.kind == "event":
+                    event = await session.get(Event, job.event_id)
+                    assert event is not None
+                    event.status = job.status
+                    event.error_category = "worker_lost"
+            exhausted = (
+                await session.scalars(
+                    select(Job).where(
+                        Job.status == "queued",
+                        Job.attempts > 0,
+                        Job.started_at + budget_seconds <= now,
+                    )
+                )
+            ).all()
+            for pending in exhausted:
+                pending.status = "failed"
+                pending.finished_at = now
+                pending.error_category = "retry_budget"
+                if pending.kind == "event":
+                    event = await session.get(Event, pending.event_id)
+                    assert event is not None
+                    event.status = "failed"
+                    event.error_category = "retry_budget"
             await session.flush()
             memory_running = await session.scalar(
                 select(Job.id).where(Job.kind == "memory", Job.status == "running").limit(1)
@@ -124,7 +156,7 @@ class Queue:
             job = candidate
             job.status = "running"
             job.attempts += 1
-            job.started_at = now
+            job.started_at = job.started_at or now
             job.token = str(uuid4())
             job.lease_until = now + lease_seconds
             session.add(JobAttempt(token=job.token, job_id=job.id, started_at=now))

@@ -246,3 +246,114 @@ def test_migration_is_repeatable(client):
             assert len((await session.scalars(select(Job))).all()) == 1
 
     client.portal.call(inspect)
+
+
+def test_expired_retry_budget_does_not_dispatch(client, provider):
+    identity = send(client).json()["job_id"]
+
+    async def run():
+        async with client.app.state.db.transaction() as session:
+            job = await session.get(Job, identity)
+            job.attempts = 1
+            job.started_at = time.time() - 4000
+        assert await client.worker.run_once() is False
+
+    client.portal.call(run)
+    assert read_job(client, identity).error_category == "retry_budget"
+    assert provider.calls == 0
+
+
+def test_usage_survives_partial_retry(client, provider):
+    original = provider.generate_digest
+    provider.generate_digest = AsyncMock(side_effect=ProviderError("connection", retryable=True))
+    identity = send(client).json()["job_id"]
+    client.portal.call(client.worker.run_once)
+    provider.generate_digest = original
+    drain(client)
+
+    async def inspect():
+        async with client.app.state.db.sessions() as session:
+            job = await session.get(Job, identity)
+            event = await session.get(Event, job.event_id)
+            assert event.usage["dispatched_attempts"] == 3
+
+    client.portal.call(inspect)
+
+
+def test_worker_process_lock_prevents_independent_limiters(client):
+    import fcntl
+
+    path = Path(client.worker.db.engine.url.database).resolve().with_suffix(".worker.lock")
+    with path.open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with pytest.raises(RuntimeError, match="One worker process"):
+            client.portal.call(client.worker.run)
+
+
+def test_legacy_migration_preserves_completed_and_reconciles_interrupted(tmp_path):
+    from developer_ops.db import Database
+    from developer_ops.queue import Queue
+
+    async def run():
+        db = Database(f"sqlite+aiosqlite:///{tmp_path}/legacy.db")
+        await db.initialize()
+        async with db.transaction() as session:
+            for status in ["completed", "processing", "received", "failed"]:
+                session.add(Event(id=status, kind="issues", payload={}, status=status))
+        await Queue(db).migrate()
+        await Queue(db).migrate()
+        async with db.sessions() as session:
+            jobs = (await session.scalars(select(Job))).all()
+            assert {j.event_id: j.status for j in jobs} == {
+                "completed": "succeeded",
+                "processing": "queued",
+                "received": "queued",
+                "failed": "failed",
+            }
+        await db.close()
+
+    asyncio.run(run())
+
+
+def test_memory_publication_commit_gap_recovers(client, tmp_path, monkeypatch):
+    client.worker.config.memory_enabled = True
+    client.worker.config.memory_path = str(tmp_path / "index")
+    send(client)
+    client.portal.call(client.worker.run_once)
+    import developer_ops.memory.jobs as module
+
+    original = module.os.replace
+
+    def interrupted(source, target):
+        original(source, target)
+        raise RuntimeError("publication acknowledgment lost")
+
+    monkeypatch.setattr(module.os, "replace", interrupted)
+    client.portal.call(client.worker.run_once)
+    assert (tmp_path / "index" / "CURRENT").exists()
+
+    async def find():
+        async with client.app.state.db.sessions() as session:
+            return await session.scalar(select(Job).where(Job.kind == "memory"))
+
+    failed = client.portal.call(find)
+    assert failed.status == "failed"
+    monkeypatch.setattr(module.os, "replace", original)
+    client.portal.call(replay, client.app.state.queue, failed.id)
+    drain(client)
+    assert read_job(client, failed.id).status == "succeeded"
+    from developer_ops.memory.index import Index
+
+    assert len(Index(tmp_path / "index").chunks) == 1
+
+
+def test_model_change_invalidates_stage_checkpoint(client, provider):
+    original = provider.generate_digest
+    provider.generate_digest = AsyncMock(side_effect=ProviderError("connection", retryable=True))
+    send(client)
+    client.portal.call(client.worker.run_once)
+    assert provider.calls == 1
+    client.worker.boundary.model = "new-model"
+    provider.generate_digest = original
+    drain(client)
+    assert provider.calls == 3  # extraction reruns for changed model, then digest

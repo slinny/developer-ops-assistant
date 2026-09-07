@@ -20,14 +20,14 @@ class Capacity:
     @asynccontextmanager
     async def acquire(self) -> AsyncIterator[None]:
         if self.semaphore.locked() and self.waiters >= self.config.max_waiters:
-            raise ProviderError("capacity")
+            raise ProviderError("capacity", retryable=True)
         self.waiters += 1
         try:
             try:
                 async with asyncio.timeout(self.config.capacity_wait_seconds):
                     await self.semaphore.acquire()
             except TimeoutError:
-                raise ProviderError("capacity") from None
+                raise ProviderError("capacity", retryable=True) from None
         finally:
             self.waiters -= 1
         try:
@@ -35,7 +35,11 @@ class Capacity:
             while self.starts and self.starts[0] <= now - self.config.rate_window_seconds:
                 self.starts.popleft()
             if len(self.starts) >= self.config.requests_per_window:
-                raise ProviderError("local_rate_limit")
+                raise ProviderError(
+                    "local_rate_limit",
+                    retryable=True,
+                    retry_after=self.config.rate_window_seconds - (now - self.starts[0]),
+                )
             self.starts.append(now)
             yield
         finally:

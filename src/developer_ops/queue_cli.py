@@ -4,11 +4,12 @@ import argparse
 import asyncio
 import json
 import time
+from uuid import uuid4
 
 from sqlalchemy import select, text
 
 from developer_ops.config import Settings
-from developer_ops.db import Database, Event, Job
+from developer_ops.db import Database, Event, Job, JobReplay
 from developer_ops.queue import Queue
 
 
@@ -18,6 +19,15 @@ async def replay(queue: Queue, identity: str) -> None:
         job = await session.get(Job, identity)
         if job is None or job.status != "failed":
             raise ValueError("Replay requires a failed job")
+        session.add(
+            JobReplay(
+                id=str(uuid4()),
+                job_id=job.id,
+                requested_at=time.time(),
+                previous_error=job.error_category,
+                previous_attempts=job.attempts,
+            )
+        )
         job.status = "queued"
         job.attempts = 0
         job.replay_count += 1
@@ -25,6 +35,7 @@ async def replay(queue: Queue, identity: str) -> None:
         job.created_at = time.time()
         job.available_at = job.created_at
         job.finished_at = None
+        job.started_at = None
         job.error_category = None
         if job.kind == "event":
             event = await session.get(Event, job.event_id)
@@ -69,3 +80,7 @@ def main() -> None:
     parser.add_argument("job_id", nargs="?")
     args = parser.parse_args()
     asyncio.run(run(args.command, args.job_id))
+
+
+if __name__ == "__main__":
+    main()

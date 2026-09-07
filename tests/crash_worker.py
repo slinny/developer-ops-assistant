@@ -15,7 +15,7 @@ from developer_ops.worker import Worker
 
 
 class Provider:
-    model = "crash-fake"
+    model = "fake-v1"
 
     async def extract_task_update(self, context):
         return LLMResponse('{"summary":"Extracted","category":"bug"}', self.model)

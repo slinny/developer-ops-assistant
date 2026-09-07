@@ -47,7 +47,7 @@ async def fail(
         retry = (
             retryable
             and current.attempts < worker.config.job_max_attempts
-            and now + delay < current.created_at + worker.config.job_budget_seconds
+            and now + delay < (current.started_at or now) + worker.config.job_budget_seconds
         )
         current.status = "queued" if retry else "failed"
         current.available_at = now + delay

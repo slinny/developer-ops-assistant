@@ -23,7 +23,10 @@ async def metrics(db: Database) -> dict[str, object]:
     queued = [j for j in jobs if j.status == "queued"]
     succeeded = [j for j in jobs if j.status == "succeeded"]
     causes: dict[str, int] = {}
+    failures: dict[str, int] = {}
     for attempt in attempts:
+        if attempt.error_category:
+            failures[attempt.error_category] = failures.get(attempt.error_category, 0) + 1
         if attempt.outcome == "retry":
             key = attempt.error_category or "unknown"
             causes[key] = causes.get(key, 0) + 1
@@ -36,6 +39,7 @@ async def metrics(db: Database) -> dict[str, object]:
         "oldest_queued_age_seconds": max((now - j.created_at for j in queued), default=0),
         "throughput_per_second_last_60s": sum((j.finished_at or 0) >= now - 60 for j in succeeded)
         / 60,
+        "attempt_failures_by_cause": failures,
         "retries": sum(causes.values()),
         "retries_by_cause": causes,
         "lease_recoveries": sum(a.outcome == "lease_expired" for a in attempts),
