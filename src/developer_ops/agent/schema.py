@@ -102,3 +102,10 @@ CONTRACTS: dict[str, type[Strict]] = {
 POLICIES = {
     name: {"execution": "synchronous", "write": name == "create_task"} for name in CONTRACTS
 }
+
+
+class CreateRequest(Strict):
+    repository: Repository
+    arguments: CreateArgs
+    confirmed: bool
+    investigation_id: str | None = Field(default=None, max_length=100)

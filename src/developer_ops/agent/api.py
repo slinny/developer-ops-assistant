@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException
 
 from developer_ops.agent.jobs import agent_context, cancel, investigate
 from developer_ops.agent.runtime import Model
-from developer_ops.agent.schema import InvestigationRequest, State
+from developer_ops.agent.schema import CreateRequest, InvestigationRequest, State
 from developer_ops.config import Settings
 from developer_ops.db import Database, Job
 from developer_ops.queue import Queue, QueueFull
@@ -97,5 +97,19 @@ def router(db: Database, config: Settings, model: Model | None = None) -> APIRou
         await cancel(db, job_id)
         job = await scoped_job(job_id)
         return {"job_id": job_id, "status": job.status}
+
+    @api.post("/tasks")
+    async def write_task(request: CreateRequest) -> dict[str, object]:
+        from developer_ops.agent.write import WriteConflict, create_task
+
+        scope(request.repository)
+        try:
+            return (await create_task(db, request)).model_dump()
+        except PermissionError:
+            raise HTTPException(403, "Write not authorized") from None
+        except WriteConflict:
+            raise HTTPException(409, "Idempotency key conflicts with prior request") from None
+        except ValueError:
+            raise HTTPException(422, "Invalid investigation reference") from None
 
     return api

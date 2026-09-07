@@ -68,7 +68,9 @@ class Tools:
                     url=(
                         f"https://github.com/{row.repository}/"
                         f"{'pull' if row.kind == 'pull_request' else 'issues'}/{row.number}"
-                    ),
+                    )
+                    if row.kind != "local"
+                    else f"local-task:{row.id}",
                     text=f"{row.state}: {row.summary}\nUpdated: {row.source_updated_at}"[:12000],
                 )
                 for row in rows[: args.limit]
