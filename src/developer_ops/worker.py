@@ -1,4 +1,5 @@
 """Run one worker process per database; concurrency shares provider capacity."""
+
 import asyncio
 import signal
 
@@ -23,6 +24,7 @@ class Worker:
 
     async def execute(self, job: Job) -> None:
         from developer_ops.jobs import process
+
         await process(self, job)
 
     async def run_once(self) -> bool:
@@ -32,8 +34,9 @@ class Worker:
         heartbeat = asyncio.create_task(self.heartbeat(job))
         processing = asyncio.create_task(self.execute(job))
         try:
-            done, _ = await asyncio.wait((heartbeat, processing),
-                                         return_when=asyncio.FIRST_COMPLETED)
+            done, _ = await asyncio.wait(
+                (heartbeat, processing), return_when=asyncio.FIRST_COMPLETED
+            )
             for task in done:
                 await task
         except LostLease:
@@ -52,6 +55,7 @@ class Worker:
             except Exception:
                 # Database outages leave leases to recover; never terminate the pool.
                 from developer_ops.observability import log
+
                 log("worker", "poll_failed")
             try:
                 await asyncio.wait_for(self.stopping.wait(), self.config.worker_poll_seconds)

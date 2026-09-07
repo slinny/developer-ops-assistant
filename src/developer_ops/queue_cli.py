@@ -1,4 +1,5 @@
 """Inspect failed jobs and explicitly replay them, retaining attempt history."""
+
 import argparse
 import asyncio
 import json
@@ -45,9 +46,19 @@ async def run(command: str, identity: str | None) -> None:
         else:
             async with db.sessions() as session:
                 jobs = (await session.scalars(select(Job).where(Job.status == "failed"))).all()
-                print(json.dumps([{"job_id": j.id, "error": j.error_category,
-                                   "attempts": j.attempts, "replays": j.replay_count}
-                                  for j in jobs]))
+                print(
+                    json.dumps(
+                        [
+                            {
+                                "job_id": j.id,
+                                "error": j.error_category,
+                                "attempts": j.attempts,
+                                "replays": j.replay_count,
+                            }
+                            for j in jobs
+                        ]
+                    )
+                )
     finally:
         await db.close()
 

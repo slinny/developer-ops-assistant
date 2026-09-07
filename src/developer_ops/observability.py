@@ -10,6 +10,8 @@ from pydantic import ValidationError
 
 request_id: ContextVar[str | None] = ContextVar("request_id", default=None)
 event_id: ContextVar[str | None] = ContextVar("event_id", default=None)
+job_id: ContextVar[str | None] = ContextVar("job_id", default=None)
+job_attempt: ContextVar[int | None] = ContextVar("job_attempt", default=None)
 logger = logging.getLogger("developer_ops")
 
 
@@ -43,6 +45,8 @@ def log(
                 "timestamp": time.time(),
                 "request_id": request_id.get(),
                 "event_id": event_id.get(),
+                "job_id": job_id.get(),
+                "job_attempt": job_attempt.get(),
                 "stage": stage,
                 "duration_ms": round(duration_ms, 3),
                 "model": model,

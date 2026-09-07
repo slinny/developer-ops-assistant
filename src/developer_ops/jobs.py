@@ -1,4 +1,5 @@
 """Resumable event processing with fenced, atomic business effects."""
+
 import asyncio
 import time
 from datetime import UTC
@@ -50,20 +51,34 @@ async def event_job(worker: "Worker", job: Job) -> None:
         await session.execute(text("BEGIN IMMEDIATE"))
         current = await worker.queue.owned(session, job)
         statement = insert(Task).values(
-            repository=payload.repository.full_name, kind=kind, number=item.number,
+            repository=payload.repository.full_name,
+            kind=kind,
+            number=item.number,
             state=item.state,
             source_updated_at=item.updated_at.astimezone(UTC).isoformat(timespec="microseconds"),
-            summary=update.summary, category=update.category, event_id=job.event_id)
+            summary=update.summary,
+            category=update.category,
+            event_id=job.event_id,
+        )
         newer = statement.excluded.source_updated_at > Task.source_updated_at
-        tie = ((statement.excluded.source_updated_at == Task.source_updated_at)
-               & (statement.excluded.event_id > Task.event_id))
-        await session.execute(statement.on_conflict_do_update(
-            index_elements=[Task.repository, Task.kind, Task.number],
-            set_={name: getattr(statement.excluded, name) for name in (
-                "state", "source_updated_at", "summary", "category", "event_id")},
-            where=newer | tie))
-        await session.execute(insert(Digest).values(event_id=job.event_id, summary=digest.summary)
-                              .on_conflict_do_nothing(index_elements=[Digest.event_id]))
+        tie = (statement.excluded.source_updated_at == Task.source_updated_at) & (
+            statement.excluded.event_id > Task.event_id
+        )
+        await session.execute(
+            statement.on_conflict_do_update(
+                index_elements=[Task.repository, Task.kind, Task.number],
+                set_={
+                    name: getattr(statement.excluded, name)
+                    for name in ("state", "source_updated_at", "summary", "category", "event_id")
+                },
+                where=newer | tie,
+            )
+        )
+        await session.execute(
+            insert(Digest)
+            .values(event_id=job.event_id, summary=digest.summary)
+            .on_conflict_do_nothing(index_elements=[Digest.event_id])
+        )
         event = await session.get(Event, job.event_id)
         assert event is not None
         event.status = "completed"
@@ -83,6 +98,12 @@ async def event_job(worker: "Worker", job: Job) -> None:
 
 async def process(worker: "Worker", job: Job) -> None:
     records: list[dict[str, object]] = []
+    from developer_ops.observability import event_id, job_attempt, job_id, log
+
+    eid = event_id.set(job.event_id)
+    jid = job_id.set(job.id)
+    aid = job_attempt.set(job.attempts)
+    log("job", "running")
     context_token = attempt_records.set(records)
     try:
         async with asyncio.timeout(worker.config.processing_deadline_seconds):
@@ -90,11 +111,16 @@ async def process(worker: "Worker", job: Job) -> None:
                 await event_job(worker, job)
             else:
                 from developer_ops.memory.jobs import memory_job
+
                 await memory_job(worker, job)
     except LostLease:
         raise
     except Exception as exc:
         from developer_ops.retry import fail
+
         await fail(worker, job, exc, records)
     finally:
         attempt_records.reset(context_token)
+        event_id.reset(eid)
+        job_id.reset(jid)
+        job_attempt.reset(aid)

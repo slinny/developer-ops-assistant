@@ -1,4 +1,5 @@
 """Persist retry decisions; no sleeping provider retry loop inside queue jobs."""
+
 import random
 import time
 from typing import TYPE_CHECKING
@@ -27,12 +28,15 @@ def classify(exc: Exception) -> tuple[str, bool, float]:
     return "internal", False, 0
 
 
-async def fail(worker: "Worker", job: Job, exc: Exception,
-               records: list[dict[str, object]]) -> None:
+async def fail(
+    worker: "Worker", job: Job, exc: Exception, records: list[dict[str, object]]
+) -> None:
     category, retryable, retry_after = classify(exc)
     now = time.time()
-    cap = min(worker.config.retry_cap_seconds,
-              worker.config.retry_base_seconds * 2 ** min(job.attempts - 1, 30))
+    cap = min(
+        worker.config.retry_cap_seconds,
+        worker.config.retry_base_seconds * 2 ** min(job.attempts - 1, 30),
+    )
     delay = max(random.uniform(0, cap), retry_after)
     async with worker.db.transaction() as session:
         await session.execute(text("BEGIN IMMEDIATE"))
@@ -40,8 +44,11 @@ async def fail(worker: "Worker", job: Job, exc: Exception,
         if durable is not None and durable.status == "succeeded":
             return  # Commit succeeded even if its acknowledgment raised.
         current = await worker.queue.owned(session, job)
-        retry = (retryable and current.attempts < worker.config.job_max_attempts
-                 and now + delay < current.created_at + worker.config.job_budget_seconds)
+        retry = (
+            retryable
+            and current.attempts < worker.config.job_max_attempts
+            and now + delay < current.created_at + worker.config.job_budget_seconds
+        )
         current.status = "queued" if retry else "failed"
         current.available_at = now + delay
         current.error_category = category

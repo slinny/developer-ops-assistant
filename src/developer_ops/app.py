@@ -18,14 +18,14 @@ from developer_ops.db import Database, Digest, Job
 from developer_ops.observability import configure_logging, log, request_id
 from developer_ops.observability import event_id as event_context
 from developer_ops.provider import LLMProvider
-from developer_ops.queue import Queue
+from developer_ops.queue import Queue, QueueFull
 from developer_ops.schemas import WebhookPayload
 
 
 def create_app(settings: Settings | None = None, provider: LLMProvider | None = None) -> FastAPI:
     config = settings or Settings()  # type: ignore[call-arg]
     db = Database(config.database_url)
-    queue = Queue(db)
+    queue = Queue(db, config.queue_max_pending)
     configure_logging()
 
     @asynccontextmanager
@@ -108,6 +108,10 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             raise HTTPException(422, "Missing event item")
         try:
             result = await queue.enqueue(event_id, kind, payload.model_dump(mode="json"))
+        except QueueFull:
+            raise HTTPException(
+                503, "Queue capacity reached", headers={"Retry-After": "5"}
+            ) from None
         except SQLAlchemyError:
             raise HTTPException(503, "Database unavailable") from None
         return JSONResponse(
@@ -115,18 +119,39 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
             status_code=409 if result["status"] == "conflict" else 202,
         )
 
+    @app.get("/queue/metrics")
+    async def queue_metrics(
+        authorization: Annotated[str | None, Header()] = None,
+    ) -> dict[str, object]:
+        if not hmac.compare_digest(
+            (authorization or "").encode(),
+            ("Bearer " + config.api_token.get_secret_value()).encode(),
+        ):
+            raise HTTPException(401, "Invalid token")
+        from developer_ops.queue_metrics import metrics
+
+        return await metrics(db)
+
     @app.get("/jobs/{job_id}")
-    async def job_status(job_id: str, authorization: Annotated[str | None, Header()] = None
-                         ) -> dict[str, object]:
-        if not hmac.compare_digest((authorization or "").encode(),
-                                   ("Bearer " + config.api_token.get_secret_value()).encode()):
+    async def job_status(
+        job_id: str, authorization: Annotated[str | None, Header()] = None
+    ) -> dict[str, object]:
+        if not hmac.compare_digest(
+            (authorization or "").encode(),
+            ("Bearer " + config.api_token.get_secret_value()).encode(),
+        ):
             raise HTTPException(401, "Invalid token")
         async with db.sessions() as session:
             job = await session.get(Job, job_id)
             if job is None:
                 raise HTTPException(404, "Job not found")
-            return {"job_id": job.id, "status": job.status, "attempts": job.attempts,
-                    "error_category": job.error_category, "available_at": job.available_at}
+            return {
+                "job_id": job.id,
+                "status": job.status,
+                "attempts": job.attempts,
+                "error_category": job.error_category,
+                "available_at": job.available_at,
+            }
 
     @app.get("/digests")
     async def digests(

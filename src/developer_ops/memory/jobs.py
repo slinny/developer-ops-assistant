@@ -1,4 +1,5 @@
 """Coalesced event-only snapshots; builders never publish without a live lease."""
+
 import asyncio
 import hashlib
 import os
@@ -20,21 +21,34 @@ async def memory_job(worker: "Worker", job: Job) -> None:
     # One read transaction captures both source rows and the covered queue entries.
     async with worker.db.transaction() as session:
         await session.execute(text("BEGIN"))
-        rows = (await session.execute(select(Digest, Event).join(
-            Event, Digest.event_id == Event.id))).all()
-        covered = list((await session.scalars(select(Job.id).where(
-            Job.kind == "memory", Job.status == "queued"))).all())
+        rows = (
+            await session.execute(select(Digest, Event).join(Event, Digest.event_id == Event.id))
+        ).all()
+        covered = list(
+            (
+                await session.scalars(
+                    select(Job.id).where(Job.kind == "memory", Job.status == "queued")
+                )
+            ).all()
+        )
     documents = []
     for digest, event in rows:
         repository = event.payload["repository"]["full_name"]
         item = event.payload.get("issue") or event.payload["pull_request"]
         kind = "issues" if event.kind == "issues" else "pull"
-        documents.append(Document(
-            id=f"digest:{event.id}", repository=repository, source_type="digest",
-            title=item["title"], text=digest.summary,
-            url=f"https://github.com/{repository}/{kind}/{item['number']}",
-            updated_at=item["updated_at"], version=event.id,
-            content_hash=hashlib.sha256(digest.summary.encode()).hexdigest()))
+        documents.append(
+            Document(
+                id=f"digest:{event.id}",
+                repository=repository,
+                source_type="digest",
+                title=item["title"],
+                text=digest.summary,
+                url=f"https://github.com/{repository}/{kind}/{item['number']}",
+                updated_at=item["updated_at"],
+                version=event.id,
+                content_hash=hashlib.sha256(digest.summary.encode()).hexdigest(),
+            )
+        )
     path = Path(worker.config.memory_path)
     # Cancellation may leave an unpublished generation; it cannot change CURRENT.
     generation = await asyncio.to_thread(build, documents, path, publish=False)

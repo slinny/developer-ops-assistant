@@ -68,8 +68,12 @@ def client(path: Path) -> Any:
 
 
 def build(
-    documents: list[Document], path: Path, size: int = 256, overlap: int = 26,
-    *, publish: bool = True,
+    documents: list[Document],
+    path: Path,
+    size: int = 256,
+    overlap: int = 26,
+    *,
+    publish: bool = True,
 ) -> str:
     if len({d.id for d in documents}) != len(documents):
         raise ValueError("Normalize duplicate document IDs before indexing")
