@@ -1,7 +1,8 @@
 import asyncio
 
 import pytest
-from conftest import FakeProvider, send
+from conftest import FakeProvider
+from conftest import send_and_process as send
 
 from developer_ops.config import Settings
 from developer_ops.llm import LLMBoundary
@@ -36,8 +37,8 @@ def test_overall_deadline_records_failure(client, provider):
         await asyncio.Event().wait()
 
     provider.extract_task_update = hang
-    client.app.state.processor.config.processing_deadline_seconds = 0.01
+    client.worker.config.processing_deadline_seconds = 0.01
     response = send(client)
-    assert response.status_code == 503
+    assert response.status_code == 200
     assert response.json()["error_category"] == "deadline"
     assert client.get("/digests", headers={"Authorization": "Bearer test-token"}).json() == []

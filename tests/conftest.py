@@ -36,9 +36,14 @@ def client(tmp_path, provider):
         webhook_secret="test-secret",
         api_token="test-token",
         database_url=f"sqlite+aiosqlite:///{tmp_path}/test.db",
+        retry_base_seconds=0,
+        job_max_attempts=3,
         _env_file=None,
     )
     with TestClient(create_app(settings, provider)) as client:
+        from developer_ops.worker import Worker
+
+        client.worker = Worker(client.app.state.db, provider, settings)
         yield client
 
 
@@ -66,4 +71,29 @@ def send(client, delivery="delivery-1", kind="issues", **changes):
             "x-github-event": kind,
             "x-github-delivery": delivery,
         },
+    )
+
+
+def drain(client):
+    async def run():
+        for _ in range(20):
+            if not await client.worker.run_once():
+                break
+
+    client.portal.call(run)
+
+
+def send_and_process(client, *args, **kwargs):
+    """Accept over HTTP, explicitly run worker, then read the authenticated job API."""
+    response = send(client, *args, **kwargs)
+    if response.status_code != 202:
+        return response
+    drain(client)
+    result = client.get(
+        "/jobs/" + response.json()["job_id"], headers={"Authorization": "Bearer test-token"}
+    )
+    import httpx
+
+    return httpx.Response(
+        result.status_code, json={**response.json(), **result.json()}, headers=response.headers
     )

@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import AsyncMock
 
 import pytest
-from conftest import send
+from conftest import send_and_process as send
 from test_consistency import snapshot
 
 from developer_ops.provider import ProviderError
@@ -18,7 +18,7 @@ def test_transient_failure_recovers_through_webhook(client, provider, category, 
             LLMResponse('{"summary":"Recovered","category":"bug"}', provider.model),
         ]
     )
-    client.app.state.processor.config.retry_base_seconds = 0
+    client.worker.config.retry_base_seconds = 0
     result = send(client)
     assert result.status_code == 200
     assert provider.extract_task_update.await_count == 2
@@ -27,15 +27,15 @@ def test_transient_failure_recovers_through_webhook(client, provider, category, 
     assert any(
         f["outcome"] == "retry_scheduled" and f["error_category"] == category for f in fields
     )
-    assert {f["request_id"] for f in fields} == {result.headers["x-request-id"]}
+    assert any(f["job_id"] == result.json()["job_id"] for f in fields)
 
 
 @pytest.mark.parametrize("category", ["rate_limit", "provider_http", "connection"])
 def test_exhaustion_fails_closed_and_duplicate_does_not_retry(client, provider, category):
     provider.extract_task_update = AsyncMock(side_effect=ProviderError(category, retryable=True))
-    client.app.state.processor.config.retry_base_seconds = 0
+    client.worker.config.retry_base_seconds = 0
     response = send(client)
-    assert response.status_code == 503
+    assert response.status_code == 200
     assert response.json()["error_category"] == category
     assert provider.extract_task_update.await_count == 3
     assert snapshot(client)["tasks"] == snapshot(client)["digests"] == []
@@ -53,8 +53,8 @@ def test_real_async_timeout_exhaustion(client, provider):
             cancellations.append(True)
 
     provider.extract_task_update = hang
-    config = client.app.state.processor.config
-    config.attempt_timeout_seconds = 0.005
+    config = client.worker.config
+    client.worker.boundary.config.attempt_timeout_seconds = 0.005
     config.retry_base_seconds = 0
     response = send(client)
     assert response.json()["error_category"] == "timeout"
@@ -67,13 +67,13 @@ def test_deadline_in_digest_leaves_no_task(client, provider):
         await asyncio.Event().wait()
 
     provider.generate_digest = hang
-    client.app.state.processor.config.processing_deadline_seconds = 0.02
+    client.worker.config.processing_deadline_seconds = 0.02
     assert send(client).json()["error_category"] == "deadline"
     assert snapshot(client)["tasks"] == snapshot(client)["digests"] == []
 
 
 def test_capacity_rejection_is_durable(client):
-    boundary = client.app.state.processor.provider
+    boundary = client.worker.boundary
     boundary.config.capacity_wait_seconds = 0.005
 
     # Acquire all permits on the app's own event loop.
@@ -96,7 +96,7 @@ def test_capacity_rejection_is_durable(client):
 
 
 def test_rate_limit_during_digest_is_atomic(client):
-    client.app.state.processor.config.requests_per_window = 1
+    client.worker.boundary.config.requests_per_window = 1
     assert send(client).json()["error_category"] == "local_rate_limit"
     assert snapshot(client)["tasks"] == snapshot(client)["digests"] == []
 
@@ -107,10 +107,10 @@ def test_concurrent_unique_deliveries_keep_context_and_single_task(client, caplo
     assert all(r.status_code == 200 for r in results)
     assert len(snapshot(client)["tasks"]) == 1
     assert len(snapshot(client)["digests"]) == 4
-    mapping = {r.json()["event_id"]: r.headers["x-request-id"] for r in results}
+    job_ids = {r.json()["job_id"] for r in results}
     for record in caplog.records:
-        if record.name == "developer_ops":
-            assert record.fields["request_id"] == mapping[record.fields["event_id"]]
+        if record.name == "developer_ops" and record.fields["job_id"]:
+            assert record.fields["job_id"] in job_ids
 
 
 def test_unexpected_provider_error_is_safe_and_not_retried(client, provider, caplog):

@@ -1,12 +1,14 @@
 import pytest
-from conftest import send
+from conftest import drain, send
 
 
 @pytest.mark.parametrize("kind", ["issues", "pull_request"])
 def test_event_to_digest(client, provider, kind):
     response = send(client, kind=kind)
-    assert response.status_code == 200
-    assert response.json()["status"] == "completed"
+    assert response.status_code == 202
+    assert response.json()["status"] == "queued"
+    assert provider.calls == 0
+    drain(client)
     assert provider.calls == 2
     digests = client.get("/digests", headers={"Authorization": "Bearer test-token"})
     assert digests.json() == [
@@ -17,6 +19,8 @@ def test_event_to_digest(client, provider, kind):
 def test_duplicate_does_not_call_provider(client, provider):
     send(client)
     assert send(client).json()["duplicate"] is True
+    assert provider.calls == 0
+    drain(client)
     assert provider.calls == 2
 
 
@@ -42,9 +46,10 @@ def test_event_is_durable_before_llm(client, provider):
     async def inspect(context):
         async with client.app.state.db.sessions() as session:
             event = await session.get(Event, "delivery-1")
-            assert event.status == "processing"
+            assert event.status == "queued"
             assert event.payload["repository"]["full_name"] == "example/project"
         return await original(context)
 
     provider.extract_task_update = inspect
-    assert send(client).status_code == 200
+    assert send(client).status_code == 202
+    drain(client)

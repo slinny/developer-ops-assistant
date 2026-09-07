@@ -2,7 +2,7 @@ from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import AsyncMock
 
 import pytest
-from conftest import send
+from conftest import send_and_process as send
 from sqlalchemy import event, select
 from sqlalchemy.exc import OperationalError
 
@@ -51,7 +51,7 @@ def test_invalid_digest_rolls_back_task_change(client, provider):
         send(
             client, delivery="second", state="closed", updated_at="2026-09-07T00:00:00Z"
         ).status_code
-        == 503
+        == 200
     )
     after = snapshot(client)
     assert after["tasks"] == before["tasks"]
@@ -106,7 +106,7 @@ def test_commit_acknowledgment_failure_preserves_completed(client):
 
     def fail_after_commit(session):
         commits.append(True)
-        if len(commits) == 3:  # receipt, processing, then atomic completion
+        if len(commits) == 5:  # receipt, processing, then atomic completion
             raise OperationalError("ack lost", None, Exception("commit was durable"))
 
     event.listen(Session, "after_commit", fail_after_commit)

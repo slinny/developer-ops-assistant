@@ -1,7 +1,8 @@
 from unittest.mock import AsyncMock
 
 import pytest
-from conftest import FakeProvider, send
+from conftest import FakeProvider
+from conftest import send_and_process as send
 from test_timeouts import config
 
 from developer_ops.db import Event

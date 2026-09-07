@@ -55,6 +55,14 @@ async def fail(
         current.lease_until = None
         current.token = None
         current.finished_at = None if retry else now
+        from developer_ops.observability import log
+
+        log(
+            "job",
+            "retry_scheduled" if retry else "failed",
+            error_category=category,
+            delay_seconds=delay if retry else None,
+        )
         attempt = await session.get(JobAttempt, job.token)
         assert attempt is not None
         attempt.outcome = "retry" if retry else "failed"
