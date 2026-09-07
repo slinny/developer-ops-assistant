@@ -1,7 +1,7 @@
 # Developer Ops Assistant
 
 A small Python application that turns signed GitHub issue and pull request webhooks
-into structured task updates and per-event digests. Processing is inline in Phase 1.
+into structured task updates and per-event digests. Webhooks now enqueue durable jobs; Phase 3 workers process them asynchronously.
 
 ## Local setup
 
@@ -36,7 +36,7 @@ Model selection is configurable. Pricing will remain unknown unless explicitly c
 The provider boundary adds cancellable deadlines, bounded retries with backoff and
 jitter, process-local capacity/rate limits and per-attempt usage accounting. Task
 updates and event digests commit atomically after strict validation. JSON logs
-correlate requests and delivery IDs. Duplicate deliveries cannot repeat LLM work.
+correlate requests and delivery IDs. Duplicate deliveries share one job; crash recovery may repeat uncheckpointed provider calls.
 
 - [Architecture, configuration and failure semantics](docs/reliability.md)
 - [Ingestion baseline](docs/ingestion.md)
@@ -44,9 +44,11 @@ correlate requests and delivery IDs. Duplicate deliveries cannot repeat LLM work
 - [Streaming decision](docs/streaming.md)
 - [Final local measurements](docs/milestone-results.json)
 
-Use one worker and `--limit-concurrency 32` for the Phase 1 server. This is a local,
-inline processor; queues, crash recovery, replay and deployment remain future
-phases. All recorded timings use simulated providers, not live OpenAI requests.
+Phase 3 adds a durable SQLite queue, a separate bounded worker pool, recoverable
+leases, stage checkpoints, retry scheduling, dead letters, and asynchronous memory
+snapshots. Follow the [worker and recovery guide](docs/phase3-operations.md).
+The earlier Phase 1 reports above are historical inline-processing measurements.
+[Phase 3 measurements](docs/phase3-measurements.json) use a simulated provider.
 
 ## Project memory / RAG
 

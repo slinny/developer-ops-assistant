@@ -1,0 +1,55 @@
+{
+  "environment": {
+    "python": "3.13.1",
+    "platform": "Darwin",
+    "machine": "arm64"
+  },
+  "provider": "simulated; 10ms per operation; initial 200ms 429 outage",
+  "workers": 4,
+  "webhook_requests": 100,
+  "unique_jobs": 80,
+  "duplicate_deliveries": 20,
+  "peak_ready_depth": 80,
+  "acceptance_latency_seconds": {
+    "p50": 0.0023152080830186605,
+    "p95": 0.002824417082592845,
+    "max": 0.0055345839355140924
+  },
+  "drain_seconds": 1.6692571248859167,
+  "drain_throughput_jobs_per_second": 47.92551058032327,
+  "provider_calls": 179,
+  "final_metrics": {
+    "ready": 0,
+    "delayed": 0,
+    "running": 0,
+    "dead_letters": 0,
+    "succeeded": 80,
+    "oldest_queued_age_seconds": 0,
+    "throughput_per_second_last_60s": 1.3333333333333333,
+    "attempt_failures_by_cause": {
+      "rate_limit": 19
+    },
+    "retries": 19,
+    "retries_by_cause": {
+      "rate_limit": 19
+    },
+    "lease_recoveries": 0,
+    "processing_latency_seconds": {
+      "p50": 1.016329050064087,
+      "p95": 1.7023828029632568,
+      "max": 1.8585951328277588
+    },
+    "queue_wait_seconds": {
+      "p50": 0.6795468330383301,
+      "p95": 1.1906182765960693,
+      "max": 1.2568738460540771
+    },
+    "attempt_duration_seconds": {
+      "p50": 0.039000749588012695,
+      "p95": 0.15291905403137207,
+      "max": 0.433042049407959
+    },
+    "memory_pending": 0
+  },
+  "passed": true
+}
