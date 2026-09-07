@@ -1,0 +1,1996 @@
+{
+  "selection_rule": "dev nDCG, recall, p95 latency; quality/latency gates first",
+  "targets_met": true,
+  "selected": {
+    "configuration": {
+      "size": 128,
+      "overlap": 0,
+      "k": 10,
+      "mode": "hybrid",
+      "use_reranker": false,
+      "candidates": 20
+    },
+    "build_ms": 143.15175008960068,
+    "metrics": {
+      "queries": 24,
+      "answerable": 21,
+      "unanswerable": 3,
+      "k_chunks": 10,
+      "recall": 1.0,
+      "mrr": 0.6404761904761904,
+      "ndcg": 0.7301681547291432,
+      "evidence_recall": 0.8095238095238095,
+      "unanswerable_abstention": 0,
+      "answerable_abstention": 0,
+      "quote_provenance_rate": 1,
+      "retrieval_p50_ms": 1.7346040112897754,
+      "retrieval_p95_ms": 1.9824160262942314,
+      "end_to_end_p50_ms": 2.065249951556325,
+      "end_to_end_p95_ms": 2.3676669225096703
+    }
+  },
+  "experiments": [
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 3,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.6031746031746031,
+        "ndcg": 0.6689256204081743,
+        "evidence_recall": 0.47619047619047616,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.5704999202862382,
+        "retrieval_p95_ms": 0.6973748095333576,
+        "end_to_end_p50_ms": 0.7201040862128139,
+        "end_to_end_p95_ms": 0.9346669539809227
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8095238095238095,
+        "mrr": 0.5952380952380952,
+        "ndcg": 0.6502213698979661,
+        "evidence_recall": 0.38095238095238093,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.759728998877108,
+        "retrieval_p95_ms": 2.01345793902874,
+        "end_to_end_p50_ms": 1.8877709517255425,
+        "end_to_end_p95_ms": 2.1780419629067183
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.7619047619047619,
+        "mrr": 0.5634920634920635,
+        "ndcg": 0.6139423457483034,
+        "evidence_recall": 0.38095238095238093,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.5005419738590717,
+        "retrieval_p95_ms": 2.9742498882114887,
+        "end_to_end_p50_ms": 2.688020933419466,
+        "end_to_end_p95_ms": 3.1198749784380198
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 5,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.626984126984127,
+        "ndcg": 0.7099424354627831,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.5902084521949291,
+        "retrieval_p95_ms": 0.7030831184238195,
+        "end_to_end_p50_ms": 0.7842910708859563,
+        "end_to_end_p95_ms": 1.005917089059949
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.8571428571428571,
+        "mrr": 0.6071428571428571,
+        "ndcg": 0.6707297774252705,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.762895961292088,
+        "retrieval_p95_ms": 2.2009999956935644,
+        "end_to_end_p50_ms": 1.974479528144002,
+        "end_to_end_p95_ms": 2.3699169978499413
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.6150793650793651,
+        "ndcg": 0.6992770921397405,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.771104103885591,
+        "retrieval_p95_ms": 3.1644590198993683,
+        "end_to_end_p50_ms": 3.023000550456345,
+        "end_to_end_p95_ms": 3.4132918808609247
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 10,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.6349206349206349,
+        "ndcg": 0.726904682467927,
+        "evidence_recall": 0.7619047619047619,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.7605626014992595,
+        "retrieval_p95_ms": 0.9458749555051327,
+        "end_to_end_p50_ms": 1.08985451515764,
+        "end_to_end_p95_ms": 1.3744579628109932
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.6404761904761904,
+        "ndcg": 0.7301681547291432,
+        "evidence_recall": 0.8095238095238095,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.7346040112897754,
+        "retrieval_p95_ms": 1.9824160262942314,
+        "end_to_end_p50_ms": 2.065249951556325,
+        "end_to_end_p95_ms": 2.3676669225096703
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 0,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 143.15175008960068,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.6246031746031746,
+        "ndcg": 0.7176986543890045,
+        "evidence_recall": 0.9047619047619048,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.6111664483323693,
+        "retrieval_p95_ms": 2.9434168245643377,
+        "end_to_end_p50_ms": 2.9091460164636374,
+        "end_to_end_p95_ms": 3.3180839382112026
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 3,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8095238095238095,
+        "mrr": 0.48412698412698413,
+        "ndcg": 0.5685822518707634,
+        "evidence_recall": 0.5238095238095238,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6875210674479604,
+        "retrieval_p95_ms": 0.8553331717848778,
+        "end_to_end_p50_ms": 0.8358753984794021,
+        "end_to_end_p95_ms": 1.045500161126256
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8095238095238095,
+        "mrr": 0.5238095238095238,
+        "ndcg": 0.5974970489796029,
+        "evidence_recall": 0.47619047619047616,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.9941035425290465,
+        "retrieval_p95_ms": 2.256416017189622,
+        "end_to_end_p50_ms": 2.1554999984800816,
+        "end_to_end_p95_ms": 2.4162919726222754
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8095238095238095,
+        "mrr": 0.5317460317460317,
+        "ndcg": 0.6026023222789184,
+        "evidence_recall": 0.47619047619047616,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.8810830553993583,
+        "retrieval_p95_ms": 3.2240001019090414,
+        "end_to_end_p50_ms": 3.044208511710167,
+        "end_to_end_p95_ms": 3.4198330249637365
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 5,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9047619047619048,
+        "mrr": 0.5119047619047619,
+        "ndcg": 0.6129001832075917,
+        "evidence_recall": 0.5714285714285714,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.7139999652281404,
+        "retrieval_p95_ms": 0.9332909248769283,
+        "end_to_end_p50_ms": 0.9434579405933619,
+        "end_to_end_p95_ms": 1.216665841639042
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5396825396825397,
+        "ndcg": 0.6213065727891266,
+        "evidence_recall": 0.5714285714285714,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.0459999796003103,
+        "retrieval_p95_ms": 2.3392499424517155,
+        "end_to_end_p50_ms": 2.290520933456719,
+        "end_to_end_p95_ms": 2.6224160101264715
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5714285714285714,
+        "ndcg": 0.6674286611430511,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.9915625927969813,
+        "retrieval_p95_ms": 3.31520801410079,
+        "end_to_end_p50_ms": 3.239270648919046,
+        "end_to_end_p95_ms": 3.5516670905053616
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 10,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5214285714285715,
+        "ndcg": 0.6313217454568555,
+        "evidence_recall": 0.8095238095238095,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6853544618934393,
+        "retrieval_p95_ms": 0.8637090213596821,
+        "end_to_end_p50_ms": 0.9893545648083091,
+        "end_to_end_p95_ms": 1.210334012284875
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5706349206349206,
+        "ndcg": 0.6786581048149588,
+        "evidence_recall": 0.9523809523809523,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.7406459664925933,
+        "retrieval_p95_ms": 2.044042106717825,
+        "end_to_end_p50_ms": 2.0641250303015113,
+        "end_to_end_p95_ms": 2.4254999589174986
+      }
+    },
+    {
+      "configuration": {
+        "size": 128,
+        "overlap": 25,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 54.763499880209565,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.580952380952381,
+        "ndcg": 0.685850223392315,
+        "evidence_recall": 0.9523809523809523,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.8399585280567408,
+        "retrieval_p95_ms": 3.168458119034767,
+        "end_to_end_p50_ms": 3.136895946227014,
+        "end_to_end_p95_ms": 3.5723750479519367
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 3,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.7619047619047619,
+        "mrr": 0.5,
+        "ndcg": 0.5674527750000096,
+        "evidence_recall": 0.5714285714285714,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6381875136867166,
+        "retrieval_p95_ms": 0.8138329721987247,
+        "end_to_end_p50_ms": 0.8710420224815607,
+        "end_to_end_p95_ms": 1.1530420742928982
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5952380952380952,
+        "ndcg": 0.6626908702381048,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.6726460307836533,
+        "retrieval_p95_ms": 1.9505838863551617,
+        "end_to_end_p50_ms": 1.8980419263243675,
+        "end_to_end_p95_ms": 2.2615420166403055
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5555555555555556,
+        "ndcg": 0.6326465962585116,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.783895470201969,
+        "retrieval_p95_ms": 3.0606251675635576,
+        "end_to_end_p50_ms": 3.0394166242331266,
+        "end_to_end_p95_ms": 3.363915951922536
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 5,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9047619047619048,
+        "mrr": 0.5396825396825397,
+        "ndcg": 0.6322791138641423,
+        "evidence_recall": 0.7142857142857143,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.5564368329942226,
+        "retrieval_p95_ms": 0.6357079837471247,
+        "end_to_end_p50_ms": 0.8625414920970798,
+        "end_to_end_p95_ms": 1.0617091320455074
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.6190476190476191,
+        "ndcg": 0.7037076852927138,
+        "evidence_recall": 0.7619047619047619,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.5542295295745134,
+        "retrieval_p95_ms": 1.6816670540720224,
+        "end_to_end_p50_ms": 1.9017085433006287,
+        "end_to_end_p95_ms": 2.077666809782386
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5793650793650793,
+        "ndcg": 0.6736634113131205,
+        "evidence_recall": 0.8571428571428571,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.717499970458448,
+        "retrieval_p95_ms": 3.0454169027507305,
+        "end_to_end_p50_ms": 3.09429201297462,
+        "end_to_end_p95_ms": 3.405958879739046
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 10,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5560090702947845,
+        "ndcg": 0.666573691986422,
+        "evidence_recall": 0.9523809523809523,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6280620582401752,
+        "retrieval_p95_ms": 0.8627090137451887,
+        "end_to_end_p50_ms": 1.128979492932558,
+        "end_to_end_p95_ms": 1.5585408546030521
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.6285714285714286,
+        "ndcg": 0.7221292475419776,
+        "evidence_recall": 0.9523809523809523,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.8618748290464282,
+        "retrieval_p95_ms": 2.236790955066681,
+        "end_to_end_p50_ms": 2.375166048295796,
+        "end_to_end_p95_ms": 2.8203330002725124
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 0,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 43.3206248562783,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5888888888888889,
+        "ndcg": 0.6920849735623844,
+        "evidence_recall": 0.9523809523809523,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 3.012229106388986,
+        "retrieval_p95_ms": 3.4440418239682913,
+        "end_to_end_p50_ms": 3.5347085213288665,
+        "end_to_end_p95_ms": 4.140333971008658
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 3,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.7619047619047619,
+        "mrr": 0.47619047619047616,
+        "ndcg": 0.5498780013605552,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.7310210494324565,
+        "retrieval_p95_ms": 0.9243329986929893,
+        "end_to_end_p50_ms": 0.9810415795072913,
+        "end_to_end_p95_ms": 1.196499913930893
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5714285714285714,
+        "ndcg": 0.6451160965986504,
+        "evidence_recall": 0.6666666666666666,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.8038541311398149,
+        "retrieval_p95_ms": 2.0012089516967535,
+        "end_to_end_p50_ms": 2.0720830652862787,
+        "end_to_end_p95_ms": 2.304749796167016
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5476190476190476,
+        "ndcg": 0.6264118460884422,
+        "evidence_recall": 0.6666666666666666,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.9496869537979364,
+        "retrieval_p95_ms": 3.2256669364869595,
+        "end_to_end_p50_ms": 3.234166535548866,
+        "end_to_end_p95_ms": 3.561957972124219
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 5,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9047619047619048,
+        "mrr": 0.5158730158730158,
+        "ndcg": 0.6147043402246879,
+        "evidence_recall": 0.7619047619047619,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.5894380155950785,
+        "retrieval_p95_ms": 0.6745830178260803,
+        "end_to_end_p50_ms": 0.8876670617610216,
+        "end_to_end_p95_ms": 1.0792918037623167
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5952380952380952,
+        "ndcg": 0.6861329116532593,
+        "evidence_recall": 0.8095238095238095,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.6558540519326925,
+        "retrieval_p95_ms": 1.8716249614953995,
+        "end_to_end_p50_ms": 2.0183955784887075,
+        "end_to_end_p95_ms": 2.2730000782757998
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5714285714285714,
+        "ndcg": 0.6674286611430511,
+        "evidence_recall": 0.9047619047619048,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.9406669782474637,
+        "retrieval_p95_ms": 3.1903330236673355,
+        "end_to_end_p50_ms": 3.267999505624175,
+        "end_to_end_p95_ms": 3.576457966119051
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 10,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5321995464852608,
+        "ndcg": 0.6489989183469677,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6575623992830515,
+        "retrieval_p95_ms": 0.7856250740587711,
+        "end_to_end_p50_ms": 1.18485395796597,
+        "end_to_end_p95_ms": 1.4176671393215656
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.6047619047619047,
+        "ndcg": 0.7045544739025232,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.7562294378876686,
+        "retrieval_p95_ms": 1.9153750035911798,
+        "end_to_end_p50_ms": 2.262791385874152,
+        "end_to_end_p95_ms": 2.552333055064082
+      }
+    },
+    {
+      "configuration": {
+        "size": 256,
+        "overlap": 51,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 48.46979188732803,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.580952380952381,
+        "ndcg": 0.685850223392315,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.9091875767335296,
+        "retrieval_p95_ms": 3.478833008557558,
+        "end_to_end_p50_ms": 3.4150000428780913,
+        "end_to_end_p95_ms": 4.151541041210294
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 3,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.7619047619047619,
+        "mrr": 0.4523809523809524,
+        "ndcg": 0.5323032277211008,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.7371250540018082,
+        "retrieval_p95_ms": 0.9060001466423273,
+        "end_to_end_p50_ms": 1.0128954891115427,
+        "end_to_end_p95_ms": 1.2781668920069933
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5238095238095238,
+        "ndcg": 0.6099665493197416,
+        "evidence_recall": 0.7142857142857143,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.7326455563306808,
+        "retrieval_p95_ms": 1.9410420209169388,
+        "end_to_end_p50_ms": 2.0052294712513685,
+        "end_to_end_p95_ms": 2.2713749203830957
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5317460317460317,
+        "ndcg": 0.6150718226190572,
+        "evidence_recall": 0.7142857142857143,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 3.0162499751895666,
+        "retrieval_p95_ms": 3.2736659049987793,
+        "end_to_end_p50_ms": 3.32385441288352,
+        "end_to_end_p95_ms": 3.75054101459682
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 5,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.503968253968254,
+        "ndcg": 0.617637974112538,
+        "evidence_recall": 0.8095238095238095,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6401669234037399,
+        "retrieval_p95_ms": 0.7857091259211302,
+        "end_to_end_p50_ms": 1.0622499976307154,
+        "end_to_end_p95_ms": 1.2708331923931837
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 1.0,
+        "mrr": 0.5595238095238095,
+        "ndcg": 0.6714917719016549,
+        "evidence_recall": 0.8571428571428571,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.7532500205561519,
+        "retrieval_p95_ms": 1.9257920794188976,
+        "end_to_end_p50_ms": 2.2132500307634473,
+        "end_to_end_p95_ms": 2.369499998167157
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 1.0,
+        "mrr": 0.5674603174603174,
+        "ndcg": 0.6765970452009705,
+        "evidence_recall": 0.9523809523809523,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 3.0596250435337424,
+        "retrieval_p95_ms": 3.303792094811797,
+        "end_to_end_p50_ms": 3.479896462522447,
+        "end_to_end_p95_ms": 3.7992082070559263
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 10,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5107709750566893,
+        "ndcg": 0.6335109899855538,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6841459544375539,
+        "retrieval_p95_ms": 0.8067919407039881,
+        "end_to_end_p50_ms": 1.286437502130866,
+        "end_to_end_p95_ms": 1.5366668812930584
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5595238095238095,
+        "ndcg": 0.6714917719016549,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.5821874840185046,
+        "retrieval_p95_ms": 1.8208329565823078,
+        "end_to_end_p50_ms": 2.2113120649009943,
+        "end_to_end_p95_ms": 2.415916882455349
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 0,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 48.71541610918939,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5674603174603174,
+        "ndcg": 0.6765970452009705,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.923604450188577,
+        "retrieval_p95_ms": 3.395708044990897,
+        "end_to_end_p50_ms": 3.5477090859785676,
+        "end_to_end_p95_ms": 4.150124965235591
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 3,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.7619047619047619,
+        "mrr": 0.4523809523809524,
+        "ndcg": 0.5323032277211008,
+        "evidence_recall": 0.6190476190476191,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6693959003314376,
+        "retrieval_p95_ms": 0.8540002163499594,
+        "end_to_end_p50_ms": 0.950104440562427,
+        "end_to_end_p95_ms": 1.250165980309248
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5238095238095238,
+        "ndcg": 0.6099665493197416,
+        "evidence_recall": 0.7142857142857143,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.6132290475070477,
+        "retrieval_p95_ms": 1.8859170377254486,
+        "end_to_end_p50_ms": 1.8948540091514587,
+        "end_to_end_p95_ms": 2.192750107496977
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 3,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 3,
+        "recall": 0.8571428571428571,
+        "mrr": 0.5317460317460317,
+        "ndcg": 0.6150718226190572,
+        "evidence_recall": 0.7142857142857143,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 2.8729375917464495,
+        "retrieval_p95_ms": 3.1315828673541546,
+        "end_to_end_p50_ms": 3.1658540247008204,
+        "end_to_end_p95_ms": 3.467999864369631
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 5,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.503968253968254,
+        "ndcg": 0.617637974112538,
+        "evidence_recall": 0.8095238095238095,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6002294830977917,
+        "retrieval_p95_ms": 0.7653748616576195,
+        "end_to_end_p50_ms": 0.9990835096687078,
+        "end_to_end_p95_ms": 1.27316708676517
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5476190476190477,
+        "ndcg": 0.6509833643743504,
+        "evidence_recall": 0.8095238095238095,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.813646056689322,
+        "retrieval_p95_ms": 2.147708088159561,
+        "end_to_end_p50_ms": 2.22416699398309,
+        "end_to_end_p95_ms": 2.6372920256108046
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 5,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 5,
+        "recall": 0.9523809523809523,
+        "mrr": 0.5555555555555556,
+        "ndcg": 0.6560886376736661,
+        "evidence_recall": 0.9047619047619048,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 3.037520917132497,
+        "retrieval_p95_ms": 3.2499160151928663,
+        "end_to_end_p50_ms": 3.4825624898076057,
+        "end_to_end_p95_ms": 3.7798751145601273
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 10,
+        "mode": "vector",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5107709750566893,
+        "ndcg": 0.6335109899855538,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 0.6431249203160405,
+        "retrieval_p95_ms": 0.7426671218127012,
+        "end_to_end_p50_ms": 1.2720836093649268,
+        "end_to_end_p95_ms": 1.4751660637557507
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": false,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5571428571428572,
+        "ndcg": 0.6694049266236144,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 1.692437450401485,
+        "retrieval_p95_ms": 1.979249995201826,
+        "end_to_end_p50_ms": 2.3257709108293056,
+        "end_to_end_p95_ms": 2.727957908064127
+      }
+    },
+    {
+      "configuration": {
+        "size": 512,
+        "overlap": 102,
+        "k": 10,
+        "mode": "hybrid",
+        "use_reranker": true,
+        "candidates": 20
+      },
+      "build_ms": 46.34629189968109,
+      "metrics": {
+        "queries": 24,
+        "answerable": 21,
+        "unanswerable": 3,
+        "k_chunks": 10,
+        "recall": 1.0,
+        "mrr": 0.5650793650793651,
+        "ndcg": 0.67451019992293,
+        "evidence_recall": 1,
+        "unanswerable_abstention": 0,
+        "answerable_abstention": 0,
+        "quote_provenance_rate": 1,
+        "retrieval_p50_ms": 3.16054152790457,
+        "retrieval_p95_ms": 3.493709024041891,
+        "end_to_end_p50_ms": 3.80281254183501,
+        "end_to_end_p95_ms": 4.214624874293804
+      }
+    }
+  ],
+  "held_out": {
+    "queries": 12,
+    "answerable": 9,
+    "unanswerable": 3,
+    "k_chunks": 10,
+    "recall": 1.0,
+    "mrr": 0.7037037037037037,
+    "ndcg": 0.7769203188575826,
+    "evidence_recall": 0.7777777777777778,
+    "unanswerable_abstention": 0.3333333333333333,
+    "answerable_abstention": 0,
+    "quote_provenance_rate": 1,
+    "retrieval_p50_ms": 1.902021118439734,
+    "retrieval_p95_ms": 2.0885001868009567,
+    "end_to_end_p50_ms": 2.212624531239271,
+    "end_to_end_p95_ms": 2.415125025436282,
+    "rows": [
+      {
+        "id": "q22",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q23",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q24",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q25",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q26",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q27",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q28",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:commit:98e8aa2186d3e377ee1f9ca4caa4858ee4115d72",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q29",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q30",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q34",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:commit:d369e4425bb44fc9f00fe51ad386b459d50fe7f4",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q35",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/streaming.md",
+          "developer-ops-assistant:doc:docs/ingestion.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q36",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:commit:d2cb6b23c5b7f9e9144d42279c2868238bd29548",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:commit:cbc03e81e2c6638fd7eba0936bfb54b4ac3c49cd",
+          "developer-ops-assistant:commit:d10042fd6ca2187c0b61d54f931c0b3c7ac29356",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": null,
+        "abstained": true,
+        "quotes_supported": true,
+        "evidence_found": null
+      }
+    ]
+  },
+  "baseline_held_out": {
+    "queries": 12,
+    "answerable": 9,
+    "unanswerable": 3,
+    "k_chunks": 5,
+    "recall": 0.8888888888888888,
+    "mrr": 0.6388888888888888,
+    "ndcg": 0.7026073131986406,
+    "evidence_recall": 0.7777777777777778,
+    "unanswerable_abstention": 0.3333333333333333,
+    "answerable_abstention": 0,
+    "quote_provenance_rate": 1,
+    "retrieval_p50_ms": 0.7535833865404129,
+    "retrieval_p95_ms": 1.0774999391287565,
+    "end_to_end_p50_ms": 1.057812012732029,
+    "end_to_end_p95_ms": 1.4761670026928186,
+    "rows": [
+      {
+        "id": "q22",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q23",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:a392a0891d3e06451c89024c42e172e18f2ad13f",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q24",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q25",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q26",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q27",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:README.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714574
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q28",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:commit:98e8aa2186d3e377ee1f9ca4caa4858ee4115d72",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": true
+      },
+      {
+        "id": "q29",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": {
+          "recall": 1.0,
+          "mrr": 0.25,
+          "ndcg": 0.4306765580733931
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q30",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:commit:635bd4accf121c077d242ae4af17066952dea9b7"
+        ],
+        "metrics": {
+          "recall": 0.0,
+          "mrr": 0,
+          "ndcg": 0.0
+        },
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": false
+      },
+      {
+        "id": "q34",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:commit:d369e4425bb44fc9f00fe51ad386b459d50fe7f4",
+          "developer-ops-assistant:doc:README.md",
+          "developer-ops-assistant:doc:docs/reliability.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q35",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/measurements.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/reliability.md",
+          "developer-ops-assistant:doc:docs/streaming.md"
+        ],
+        "metrics": null,
+        "abstained": false,
+        "quotes_supported": true,
+        "evidence_found": null
+      },
+      {
+        "id": "q36",
+        "ranked": [
+          "developer-ops-assistant:doc:docs/ingestion.md",
+          "developer-ops-assistant:doc:docs/failure-injection.md",
+          "developer-ops-assistant:doc:docs/execution-report.md",
+          "developer-ops-assistant:doc:docs/measurements.md"
+        ],
+        "metrics": null,
+        "abstained": true,
+        "quotes_supported": true,
+        "evidence_found": null
+      }
+    ]
+  },
+  "manifest": {
+    "generation": "memory-3dcc0c8c7c834483bc5153cabbe0d231",
+    "embedding": "lsa-tfidf-v1",
+    "built_at": "2026-09-07T04:13:44.477256+00:00",
+    "size_words": 128,
+    "overlap_words": 0,
+    "documents": 20,
+    "chunks": 48,
+    "dimensions": 48,
+    "corpus_sha256": "0858e960c7e43cc2a03036f5d7b75718be26a236c1d4eb4dd67717110c5a6066"
+  }
+}

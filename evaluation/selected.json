@@ -1,0 +1,8 @@
+{
+  "size": 128,
+  "overlap": 0,
+  "k": 10,
+  "mode": "hybrid",
+  "use_reranker": false,
+  "candidates": 20
+}
