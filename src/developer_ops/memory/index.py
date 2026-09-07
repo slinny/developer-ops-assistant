@@ -51,7 +51,8 @@ class Embeddings:
     def load(cls, path: Path) -> "Embeddings":
         model = cls()
         model.vectorizer = TfidfVectorizer(
-            sublinear_tf=True, ngram_range=(1, 2),
+            sublinear_tf=True,
+            ngram_range=(1, 2),
             vocabulary=json.loads((path / "vocabulary.json").read_text()),
         )
         with np.load(path / "embedding.npz", allow_pickle=False) as data:
@@ -85,21 +86,34 @@ def build(documents: list[Document], path: Path, size: int = 256, overlap: int =
     # Failed generations are never activated; preserve old CURRENT on any error.
     try:
         for start in range(0, len(chunks), 1000):
-            batch = chunks[start:start + 1000]
+            batch = chunks[start : start + 1000]
             collection.add(
-                ids=[c.id for c in batch], embeddings=vectors[start:start + 1000].tolist(),
+                ids=[c.id for c in batch],
+                embeddings=vectors[start : start + 1000].tolist(),
                 documents=[c.text for c in batch],
-                metadatas=[{"repository": c.repository, "document_id": c.document_id} for c in batch],
+                metadatas=[
+                    {"repository": c.repository, "document_id": c.document_id} for c in batch
+                ],
             )
         model.save(folder)
         (folder / "chunks.json").write_text(json.dumps([c.model_dump() for c in chunks]))
         (folder / "corpus.jsonl").write_text(corpus + "\n")
-        (folder / "manifest.json").write_text(json.dumps({
-            "generation": generation, "embedding": EMBEDDING_VERSION,
-            "built_at": datetime.now(UTC).isoformat(), "size_words": size,
-            "overlap_words": overlap, "documents": len(documents), "chunks": len(chunks),
-            "dimensions": vectors.shape[1], "corpus_sha256": hashlib.sha256(corpus.encode()).hexdigest(),
-        }, indent=2))
+        (folder / "manifest.json").write_text(
+            json.dumps(
+                {
+                    "generation": generation,
+                    "embedding": EMBEDDING_VERSION,
+                    "built_at": datetime.now(UTC).isoformat(),
+                    "size_words": size,
+                    "overlap_words": overlap,
+                    "documents": len(documents),
+                    "chunks": len(chunks),
+                    "dimensions": vectors.shape[1],
+                    "corpus_sha256": hashlib.sha256(corpus.encode()).hexdigest(),
+                },
+                indent=2,
+            )
+        )
         temporary = path / f"CURRENT.{uuid4().hex}"
         temporary.write_text(generation)
         os.replace(temporary, path / "CURRENT")
@@ -116,7 +130,9 @@ class Index:
             raise ValueError("Invalid generation pointer")
         folder = path / generation
         self.manifest = json.loads((folder / "manifest.json").read_text())
-        self.chunks = [Chunk.model_validate(c) for c in json.loads((folder / "chunks.json").read_text())]
+        self.chunks = [
+            Chunk.model_validate(c) for c in json.loads((folder / "chunks.json").read_text())
+        ]
         self.by_id = {c.id: c for c in self.chunks}
         self.model = Embeddings.load(folder)
         self.collection = client(path).get_collection(generation, embedding_function=None)
