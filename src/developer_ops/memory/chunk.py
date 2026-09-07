@@ -25,7 +25,7 @@ def chunk_document(document: Document, size: int = 256, overlap: int = 26) -> li
             heading, start = line.strip(), offset
         offset += len(line)
     sections.append((heading, start, len(document.text)))
-    chunks = []
+    chunks: list[Chunk] = []
     version = f"words-v1:{size}:{overlap}"
     for heading, start, end in sections:
         words = list(re.finditer(r"\S+", document.text[start:end]))

@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from developer_ops.memory.answer import answer
 from developer_ops.memory.collect import digests, documents, github_export, history, write_snapshot
 from developer_ops.memory.index import Index, build
 from developer_ops.memory.normalize import normalize
@@ -31,7 +32,7 @@ def main() -> None:
     index.add_argument("--index", type=Path, default=Path(".memory/index"))
     index.add_argument("--size", type=int, default=256)
     index.add_argument("--overlap", type=int, default=26)
-    search = commands.add_parser("search")
+    search = commands.add_parser("search", aliases=["ask"])
     search.add_argument("query")
     search.add_argument("--repository", required=True)
     search.add_argument("--index", type=Path, default=Path(".memory/index"))
@@ -52,7 +53,12 @@ def main() -> None:
         print(build(load_documents(args.corpus), args.index, args.size, args.overlap))
     else:
         hits = vector_search(Index(args.index), args.query, args.repository, args.k)
-        print(json.dumps([{"score": h.score, **h.chunk.model_dump()} for h in hits], indent=2))
+        result = (
+            answer(hits, args.query)
+            if args.command == "ask"
+            else [{"score": h.score, **h.chunk.model_dump()} for h in hits]
+        )
+        print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":
