@@ -127,13 +127,19 @@ async def process(worker: "Worker", job: Job) -> None:
     log("job", "running")
     context_token = attempt_records.set(records)
     try:
-        async with asyncio.timeout(worker.config.processing_deadline_seconds):
+        async with asyncio.timeout(
+            None if job.kind == "investigate" else worker.config.processing_deadline_seconds
+        ):
             if job.kind == "event":
                 await event_job(worker, job)
             elif job.kind == "memory":
                 from developer_ops.memory.jobs import memory_job
 
                 await memory_job(worker, job)
+            elif job.kind == "investigate":
+                from developer_ops.agent.jobs import investigation_job
+
+                await investigation_job(worker, job)
             else:
                 raise ValueError("Unknown job kind")
             log("job", "succeeded")

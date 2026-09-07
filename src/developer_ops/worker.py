@@ -5,6 +5,7 @@ import fcntl
 import signal
 from pathlib import Path
 
+from developer_ops.agent.runtime import Model
 from developer_ops.config import Settings
 from developer_ops.db import Database, Job
 from developer_ops.llm import LLMBoundary
@@ -13,8 +14,15 @@ from developer_ops.queue import LostLease, Queue
 
 
 class Worker:
-    def __init__(self, db: Database, provider: LLMProvider, config: Settings) -> None:
+    def __init__(
+        self,
+        db: Database,
+        provider: LLMProvider,
+        config: Settings,
+        agent_model: Model | None = None,
+    ) -> None:
         self.db, self.config = db, config
+        self.agent_model = agent_model
         self.queue = Queue(db)
         self.boundary = LLMBoundary(provider, config.model_copy(update={"max_attempts": 1}))
         self.stopping = asyncio.Event()

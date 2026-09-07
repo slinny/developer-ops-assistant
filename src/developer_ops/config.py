@@ -36,3 +36,7 @@ class Settings(BaseSettings):
     memory_path: str = "./event-memory-index"
     memory_enabled: bool = True
     queue_max_pending: int = Field(default=10000, ge=1)
+    agent_repositories: list[str] = Field(default_factory=list)
+    github_token: SecretStr | None = None
+    agent_usd_per_million_upper_bound: float | None = Field(default=None, ge=0)
+    agent_sync_concurrency: int = Field(default=2, ge=1, le=16)
