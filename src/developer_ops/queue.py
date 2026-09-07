@@ -79,7 +79,10 @@ class Queue:
                 if job.status == "failed":
                     job.finished_at = now
             await session.flush()
+            memory_running = await session.scalar(select(Job.id).where(
+                Job.kind == "memory", Job.status == "running").limit(1))
             job = await session.scalar(select(Job).where(
+                Job.kind != "memory" if memory_running else True,
                 Job.status == "queued", Job.available_at <= now
             ).order_by(Job.available_at, Job.id).limit(1))
             if job is None:

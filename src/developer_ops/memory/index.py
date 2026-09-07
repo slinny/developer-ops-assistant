@@ -67,7 +67,10 @@ def client(path: Path) -> Any:
     )
 
 
-def build(documents: list[Document], path: Path, size: int = 256, overlap: int = 26) -> str:
+def build(
+    documents: list[Document], path: Path, size: int = 256, overlap: int = 26,
+    *, publish: bool = True,
+) -> str:
     if len({d.id for d in documents}) != len(documents):
         raise ValueError("Normalize duplicate document IDs before indexing")
     chunks = [chunk for doc in documents for chunk in chunk_document(doc, size, overlap)]
@@ -117,7 +120,10 @@ def build(documents: list[Document], path: Path, size: int = 256, overlap: int =
         )
         temporary = path / f"CURRENT.{uuid4().hex}"
         temporary.write_text(generation)
-        os.replace(temporary, path / "CURRENT")
+        if publish:
+            os.replace(temporary, path / "CURRENT")
+        else:
+            temporary.unlink()
     except BaseException:
         client(path).delete_collection(generation)
         raise

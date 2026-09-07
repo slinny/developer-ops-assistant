@@ -33,6 +33,6 @@ class Settings(BaseSettings):
     job_lease_seconds: float = Field(default=30, ge=0.1, le=600)
     job_max_attempts: int = Field(default=5, ge=1, le=100)
     job_budget_seconds: float = Field(default=3600, gt=0)
-    memory_path: str = "./memory-index"
+    memory_path: str = "./event-memory-index"
     memory_enabled: bool = False
     queue_max_pending: int = Field(default=10000, ge=1)
