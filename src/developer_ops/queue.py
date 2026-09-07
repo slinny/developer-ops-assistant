@@ -37,3 +37,24 @@ class Queue:
                     event.status = "queued"
                 session.add(job)
             session.add(SchemaVersion(version=3))
+
+    async def enqueue(self, event_id: str, kind: str, payload: dict[str, object]) -> dict[str, object]:
+        async with self.db.transaction() as session:
+            await session.execute(text("BEGIN IMMEDIATE"))
+            existing = await session.get(Event, event_id)
+            duplicate = existing is not None
+            if existing is not None and (existing.kind != kind or existing.payload != payload):
+                return {"event_id": event_id, "status": "conflict", "duplicate": True}
+            if existing is None:
+                session.add(Event(id=event_id, kind=kind, payload=payload, status="queued"))
+                await session.flush()
+                job = self.new_job(event_id)
+                session.add(job)
+                await session.flush()
+            else:
+                job = await session.scalar(select(Job).where(
+                    Job.idempotency_key == f"github:{event_id}:event:v1"))
+                assert job is not None
+            return {"event_id": event_id, "job_id": job.id,
+                    "idempotency_key": job.idempotency_key,
+                    "status": job.status, "duplicate": duplicate}

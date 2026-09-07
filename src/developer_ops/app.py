@@ -14,41 +14,31 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from developer_ops.config import Settings
-from developer_ops.db import Database, Digest
-from developer_ops.llm import LLMBoundary
+from developer_ops.db import Database, Digest, Job
 from developer_ops.observability import configure_logging, log, request_id
 from developer_ops.observability import event_id as event_context
-from developer_ops.provider import LLMProvider, OpenAIProvider
+from developer_ops.provider import LLMProvider
+from developer_ops.queue import Queue
 from developer_ops.schemas import WebhookPayload
-from developer_ops.service import Processor
 
 
 def create_app(settings: Settings | None = None, provider: LLMProvider | None = None) -> FastAPI:
     config = settings or Settings()  # type: ignore[call-arg]
     db = Database(config.database_url)
-    if provider is None:
-        if not config.openai_api_key:
-            raise ValueError("DOA_OPENAI_API_KEY is required")
-        provider = OpenAIProvider(config.openai_api_key.get_secret_value(), config.model)
-    llm = provider
-    processor = Processor(db, LLMBoundary(llm, config), config)
+    queue = Queue(db)
     configure_logging()
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         try:
-            await db.initialize()
+            await queue.migrate()
             yield
         finally:
-            try:
-                if isinstance(llm, OpenAIProvider):
-                    await llm.close()
-            finally:
-                await db.close()
+            await db.close()
 
     app = FastAPI(lifespan=lifespan)
     app.state.db = db
-    app.state.processor = processor
+    app.state.queue = queue
 
     @app.middleware("http")
     async def correlation(
@@ -117,17 +107,26 @@ def create_app(settings: Settings | None = None, provider: LLMProvider | None = 
         if (payload.issue if kind == "issues" else payload.pull_request) is None:
             raise HTTPException(422, "Missing event item")
         try:
-            result = await processor.ingest(event_id, kind, payload)
+            result = await queue.enqueue(event_id, kind, payload.model_dump(mode="json"))
         except SQLAlchemyError:
             raise HTTPException(503, "Database unavailable") from None
         return JSONResponse(
             result,
-            status_code=200
-            if result["status"] == "completed"
-            else 409
-            if result["status"] == "conflict"
-            else 503,
+            status_code=409 if result["status"] == "conflict" else 202,
         )
+
+    @app.get("/jobs/{job_id}")
+    async def job_status(job_id: str, authorization: Annotated[str | None, Header()] = None
+                         ) -> dict[str, object]:
+        if not hmac.compare_digest((authorization or "").encode(),
+                                   ("Bearer " + config.api_token.get_secret_value()).encode()):
+            raise HTTPException(401, "Invalid token")
+        async with db.sessions() as session:
+            job = await session.get(Job, job_id)
+            if job is None:
+                raise HTTPException(404, "Job not found")
+            return {"job_id": job.id, "status": job.status, "attempts": job.attempts,
+                    "error_category": job.error_category, "available_at": job.available_at}
 
     @app.get("/digests")
     async def digests(
