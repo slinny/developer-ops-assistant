@@ -9,6 +9,7 @@ requires-python = ">=3.11"
 dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "sqlalchemy[asyncio]>=2,<3", "aiosqlite>=0.20,<1", "pydantic-settings>=2,<3", "openai>=2,<3"]
 
 [project.scripts]
+doa-queue = "developer_ops.queue_cli:main"
 doa-worker = "developer_ops.worker:main"
 doa-memory = "developer_ops.memory.cli:main"
 
