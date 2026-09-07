@@ -68,3 +68,39 @@ class Database:
 
     async def close(self) -> None:
         await self.engine.dispose()
+
+
+class Job(Base):
+    __tablename__ = "jobs"
+    id: Mapped[str] = mapped_column(primary_key=True)
+    idempotency_key: Mapped[str] = mapped_column(unique=True)
+    event_id: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    kind: Mapped[str] = mapped_column(default="event")
+    version: Mapped[int] = mapped_column(default=1)
+    status: Mapped[str] = mapped_column(default="queued", index=True)
+    created_at: Mapped[float]
+    available_at: Mapped[float] = mapped_column(index=True)
+    started_at: Mapped[float | None]
+    finished_at: Mapped[float | None]
+    attempts: Mapped[int] = mapped_column(default=0)
+    lease_until: Mapped[float | None]
+    token: Mapped[str | None]
+    error_category: Mapped[str | None]
+    checkpoints: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    replay_count: Mapped[int] = mapped_column(default=0)
+
+
+class JobAttempt(Base):
+    __tablename__ = "job_attempts"
+    token: Mapped[str] = mapped_column(primary_key=True)
+    job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id"), index=True)
+    started_at: Mapped[float]
+    finished_at: Mapped[float | None]
+    outcome: Mapped[str] = mapped_column(default="running")
+    error_category: Mapped[str | None]
+    usage: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+
+
+class SchemaVersion(Base):
+    __tablename__ = "schema_versions"
+    version: Mapped[int] = mapped_column(primary_key=True)
